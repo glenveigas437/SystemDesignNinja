@@ -3,7 +3,7 @@ These are my System Design notes that helped me to comprehend the key concepts o
 All credits to <br>
 ## [Programming Pathshala](https://renaissance.programmingpathshala.com/crack-coding-interviews) <br>
 <p align="left">
-<a href="[https://linkedin.com/in/linkedin.com](https://www.linkedin.com/school/programming-pathshala/)" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="linkedin.com" height="30" width="40" /></a>
+<a href="(https://www.linkedin.com/school/programming-pathshala/)" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="linkedin.com" height="30" width="40" /></a>
 <a href="[https://fb.com/facebook.com](https://www.facebook.com/Programmingpathshala.1/)" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/facebook.svg" alt="facebook.com" height="30" width="40" /></a>
 <a href="[https://instagram.com/instagram.com](https://www.instagram.com/programmingpathshala)" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="instagram.com" height="30" width="40" /></a>
 <a href="[https://medium.com/medium.com](https://programmingpathshala.medium.com/)" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/medium.svg" alt="medium.com" height="30" width="40" /></a>
