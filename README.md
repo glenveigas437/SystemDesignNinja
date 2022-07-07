@@ -1,4 +1,4 @@
-# System Design Ninja
+# System Design Ninja (Building)
 These are my System Design notes that helped me to comprehend the key concepts on how to write clean, well structured code as well as dive into the crux of discovering how a system scales in a significant manner. Well as of today I am just adding these notes and still creating this repository. <br>
 
 ### All credits to <br>
