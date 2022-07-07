@@ -6,3 +6,4 @@ All credits to <br>
  - [Bharat Khanna](https://www.linkedin.com/in/bharat-khanna-717b4817b/) - High Level Design <br>
  - [Gaurav Sen](https://www.linkedin.com/in/gkcs) - [Interview Ready](https://interviewready.io/) <br>
 
+<img src="https://img.icons8.com/color/48/000000/linkedin-circled--v5.png"/>
