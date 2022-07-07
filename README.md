@@ -1,6 +1,7 @@
 # System Design Ninja
 These are my System Design notes that helped me to comprehend the key concepts on how to write clean, well structured code as well as dive into the crux of discovering how a system scales in a significant manner. Well as of today I am just adding these notes and still creating this repository. <br>
-All credits to <br>
+
+### All credits to <br>
 ## [Programming Pathshala](https://renaissance.programmingpathshala.com/crack-coding-interviews) <br>
 <p align="left">
 <a href="https://linkedin.com/school/programming-pathshala" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="programming-pathshala" height="30" width="40" /></a>
