@@ -12,12 +12,12 @@ All credits to <br>
 
 ## Vivekanand Vivek - Low Level Design <br>
 <p align="left">
-<a href="[[https://linkedin.com/in/linkedin.com](https://in.linkedin.com/in/vivekanand-vivek-7a4ab388)" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="linkedin.com" height="30" width="40" /></a>
+<a href="https://in.linkedin.com/in/vivekanand-vivek-7a4ab388" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="programming-pathshala" height="30" width="40" /></a>
 </p>
 
 ## Bharat Khanna - High Level Design <br>
 <p align="left">
-<a href="[[https://linkedin.com/in/linkedin.com](https://www.linkedin.com/in/bharat-khanna-717b4817b/)" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="linkedin.com" height="30" width="40" /></a>
+<a href="https://www.linkedin.com/in/bharat-khanna-717b4817b" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="linkedin.com" height="30" width="40" /></a>
 </p>
 
 ## [Interview Ready](https://interviewready.io/) <br>
