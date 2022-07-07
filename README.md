@@ -28,7 +28,7 @@ All credits to <br>
 <a href="[https://instagram.com/instagram.com](https://www.instagram.com/interviewready/)" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="instagram.com" height="30" width="40" /></a>
 </p>
 
-## [Gaurav Sen]<br>
+## Gaurav Sen<br>
 <p align="left">
 <a href="[https://linkedin.com/in/linkedin.com](https://www.linkedin.com/in/gkcs)" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="linkedin.com" height="30" width="40" /></a>
 <a href="[https://www.youtube.com/c/youtube.com](https://www.youtube.com/channel/UCRPMAqdtSgd0Ipeef7iFsKw)" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/youtube.svg" alt="youtube.com" height="30" width="40" /></a>
