@@ -56,8 +56,18 @@ Tools required
 1. Your favourite Programming Language (that supports OOP) - Java, Python, C#, C++
 2. IDE - (IntelliJ, VSCode, Jupyter, PyCharm)
 
-| Sr. No.|        Topic                      |
-| ------ | ----------------------------------|
-| 1      | #### Object Oriented Principles   |
-| 2      | #### S.O.L.I.D Principles         |
+| Sr. No.|        Topic                     |
+| ------ | ------------------------------   |
+| 1      |  Object Oriented Principles      |
+ --------  ------------------------------   |  
+| 2      |  S.O.L.I.D Principles            |
+| 2.1.   |  Single Responsibility Principle |
+| 2.1.   |  Open Close Principle            |
+| 2.1.   |  Liskov Substitution Principle   |
+| 2.1.   |  Interface Segregation Principle | 
+| 2.1.   |  Dependancy Inversion Principle. |
+ -------  ----------------------------------
+| 3      | Case Studies                     |
+ -------   ---------------------------------
+
 
