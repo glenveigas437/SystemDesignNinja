@@ -67,11 +67,11 @@ Tools required
 | ------ | ------------------------------   |
 | 1      |  Object Oriented Principles      |
 | 2      |  :muscle: [S.O.L.I.D Principles](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md)            |
-| 2.1    |  [Single Responsibility Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#1-single-responsibility-principle) |
-| 2.2.   |  [Open Close Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#2-open-close-principle)            |
-| 2.3.   |  [Liskov Substitution Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#3-liskov-responsibility-principle)  |
-| 2.4.   |  [Interface Segregation Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#4-interface-segregation-principle) | 
-| 2.5.   |  [Dependancy Inversion Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#5-dependancy-inversion-principle) |
+| 2.1    |  :one: [Single Responsibility Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#1-single-responsibility-principle) |
+| 2.2.   |  📖 📘[Open Close Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#2-open-close-principle)            |
+| 2.3.   |  🔄[Liskov Substitution Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#3-liskov-responsibility-principle)  |
+| 2.4.   |  💻[Interface Segregation Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#4-interface-segregation-principle) | 
+| 2.5.   |  :busts_in_silhouette:[Dependancy Inversion Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#5-dependancy-inversion-principle) |
 | 3      |  Case Studies                    |
 
 
