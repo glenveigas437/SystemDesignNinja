@@ -1,4 +1,4 @@
-# Getting Started with [S](#Single-Responsibility).O.L.I.D Principles
+# Getting Started with [S](#single-responsibility).O.L.I.D Principles
 
 
 Have a look at this example,
@@ -59,7 +59,7 @@ Your Total Bill is $5900
 
 this piece of code replicates the functionality of an Online Shopping system like Amazon where there is a class named ```Order``` has 3 methods ```addItem```, ```totalPrice```, ```payOrder``` for adding items to the cart, calculating the total price and paying for the order respectively. but this violates certain coding principles we will discuss below
 
-#Single-Responsibility
+#Single Responsibility
 ## 1) Single Responsibility Principle
 Single Responsibility Principle states that every function/class should be performing a single action only, meaning that classes and functions should be highly coherent
 
