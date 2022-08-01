@@ -1,4 +1,4 @@
-# Getting Started with [S](#single-responsibility).O.L.I.D Principles
+# Getting Started with [S](#1-single-responsibility-principle).O.L.I.D Principles
 
 
 Have a look at this example,
