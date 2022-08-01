@@ -187,6 +187,7 @@ PayPal().pay(order1,437)
 
 ### Output
 Paying via PayPal
+
 Authenticating 437
 
 In this manner we are open to adding new payment methods like Cash On Delivery or Apple Pay, etc. but in the same manner we are not editing any of the pre-existing code.
@@ -266,12 +267,14 @@ CreditCardPayment(437).pay(order2)
 Your Total Bill is $5900
 
 Paying via PayPal
+
 Authenticating abc@gmail.com
 
 
 Your Total Bill is $6300
 
 Paying via Credit Card
+
 Authenticating 437
 
 
