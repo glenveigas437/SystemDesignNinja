@@ -41,7 +41,7 @@ These are my System Design notes that helped me to comprehend the key concepts o
 
 | Sr. No.|        Topic       |
 | ------ | -------------------|
-| 1      | Low Level Design   |
+| 1      | [Low Level Design](https://github.com/glenveigas437/SystemDesignNinja/tree/main/Low%20Level%20Design)   |
 | 2      | High Level Design  |
 
 
