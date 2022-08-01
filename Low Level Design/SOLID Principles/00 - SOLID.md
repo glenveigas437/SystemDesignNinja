@@ -1,4 +1,4 @@
-# Getting Started with [S](#1-single-responsibility-principle).O.L.I.D Principles
+# Getting Started with [S](#1-single-responsibility-principle).[O](#2-open-close-principle).[L](#3-liskov-substitution-principle).[I](#4-interface-segregation-principle).[D](#5-dependancy-inversion-principle) Principles
 
 
 Have a look at this example,
