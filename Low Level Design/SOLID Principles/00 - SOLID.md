@@ -264,13 +264,14 @@ CreditCardPayment(437).pay(order2)
 
 
 ## OUTPUT
+### Order1
 Your Total Bill is $5900
 
 Paying via PayPal
 
 Authenticating abc@gmail.com
 
-
+### Order2
 Your Total Bill is $6300
 
 Paying via Credit Card
