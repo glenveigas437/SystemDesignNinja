@@ -43,3 +43,21 @@ These are my System Design notes that helped me to comprehend the key concepts o
 | ------ | -------------------|
 | 1      | Low Level Design   |
 | 2      | High Level Design  |
+
+
+## Low Level Design
+Let's take a walk back to the days we began our coding journey while pursuing our Undergraduate degree, we often used variables like i,j,k,x, etc. The code wasn't even modularised, all functionalities were dumped in the main function, but guess what your code still worked, well that's not how code is written in your dream company. Everything is structured so well that there is no chance one will spend time wondering what a particular function does. Low Level Design is all about structuring your entire code in a way that your code is readable and maintainable.
+
+Key Concepts required to master LLD
+1 Object Oriented Programming 
+2 S.O.L.I.D Principles
+
+Tools required
+1. Your favourite Programming Language (that supports OOP) - Java, Python, C#, C++
+2. IDE - (IntelliJ, VSCode, Jupyter, PyCharm)
+
+| Sr. No.|        Topic                      |
+| ------ | ----------------------------------|
+| 1      | #### Object Oriented Principles   |
+| 2      | #### S.O.L.I.D Principles         |
+
