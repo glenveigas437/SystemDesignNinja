@@ -53,8 +53,8 @@ Key Concepts required to master LLD
 2 S.O.L.I.D Principles
 
 Tools required
-1. Your favourite Programming Language (that supports OOP) - Java, Python, C#, C++
-2. IDE - (IntelliJ, VSCode, Jupyter, PyCharm)
+1. Your favourite Programming Language (that supports OOP) - [Java](https://www.java.com/en/), [Python](https://www.python.org/), [C#](https://docs.microsoft.com/en-us/dotnet/csharp/), [C++](https://isocpp.org/)
+2. IDE - ([IntelliJ](https://www.jetbrains.com/idea/download/#section=windows), [VSCode](https://code.visualstudio.com/), [Jupyter](https://jupyter.org/), [PyCharm](https://www.jetbrains.com/pycharm/download/#section=windows))
 
 | Sr. No.|        Topic                     |
 | ------ | ------------------------------   |
