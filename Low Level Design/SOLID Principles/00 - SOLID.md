@@ -192,6 +192,89 @@ Authenticating 437
 In this manner we are open to adding new payment methods like Cash On Delivery or Apple Pay, etc. but in the same manner we are not editing any of the pre-existing code.
 
 
+## 3) Liskov Substitution Principle
+What if 2 of the payment methods like Debit and Credit Card required security codes and PayPal required email address for authentication purpose, so we would now how to change the entire piece of code for every Payment Method child classes we have created, seems right? but No, this violates the Liskov Substitution Principle instead we need to create initializers for the authentication types we are creating.
+
+Liskov Substitution Principle states that if we have objects in the program then we need to replace those objects with instances or sub-classes without altering the correctness of the program.
+
+Now instead of providing ```securityKey``` while paying via PayPal we use email address for validation and to achieve this we make use of initializers
+
+Here's the fix to it.
+
+Removing the ```secretKey``` variable from each function as a parameter and initializing it for Debit, credit and UPI payment methods
+
+```
+class DebitCardPayment(PaymentMethod):
+    def __init__(self, secretKey):
+        self.secretKey = secretKey
+    
+    def pay(self, order):
+        print("Paying via Debit Card")
+        print(f"Authenticating {self.secretKey}")
+        order.status = "Paid"
+ 
+class CreditCardPayment(PaymentMethod):
+    def __init__(self, secretKey):
+        self.secretKey = secretKey
+        
+    def pay(self, order):
+        print("Paying via Credit Card")
+        print(f"Authenticating {self.secretKey}")
+        order.status = "Paid"
+
+class UPI(PaymentMethod):
+    def __init__(self, secretKey):
+        self.secretKey = secretKey
+    
+    def pay(self, order):
+        print("Paying via UPI")
+        print(f"Authenticating {self.secretKey}")
+        order.status = "Paid"
+        
+class PayPal(PaymentMethod):
+    def __init__(self, emailAddress):
+        self.emailAddress = emailAddress
+        
+    def pay(self, order):
+        print("Paying via PayPal")
+        print(f"Authenticating {self.emailAddress}")
+        order.status = "Paid"
+        
+order1=Order()
+order2=Order()
+
+order1.addItem('MacBook Pro M1 2022', 1, 1000)
+order1.addItem('iPhone 13', 2, 1500)
+order1.addItem('iPad Pro 2022', 1, 700)
+order1.addItem('MacBook Air M2 2022', 1, 1200)
+
+order2.addItem('Apple Watch Series 7', 1, 400)
+order2.addItem('iPhone 13', 3, 1500)
+order2.addItem('MacBook Pro M2 2022', 1, 1400)
+
+order1.totalPrice()
+
+PayPal('abc@gmail.com').pay(order1)
+
+order2.totalPrice()
+CreditCardPayment(437).pay(order2)
+
+```
+
+
+## OUTPUT
+Your Total Bill is $5900
+
+Paying via PayPal
+Authenticating abc@gmail.com
+
+
+Your Total Bill is $6300
+
+Paying via Credit Card
+Authenticating 437
+
+
 
 
 
