@@ -47,8 +47,7 @@ order1.payOrder('Debit Card', 437)
 
 ```
 
-| Output                                                               |
- --------------------------------------------------------------------
+|  Output                                                             |
 | Your Total Bill is $5900                                            |
 | 1 / 8 / 2022 - 18 : 30 : 50: Paying for your order via : Debit Card |
 | 1 / 8 / 2022 - 18 : 31 : 0: Verifiying your Security Code: 437      |
