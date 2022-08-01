@@ -59,14 +59,14 @@ Tools required
 | Sr. No.|        Topic                     |
 | ------ | ------------------------------   |
 | 1      |  Object Oriented Principles      |
- --------  ------------------------------   |  
+| ------   -----------------------------    |  
 | 2      |  S.O.L.I.D Principles            |
 | 2.1.   |  Single Responsibility Principle |
 | 2.1.   |  Open Close Principle            |
 | 2.1.   |  Liskov Substitution Principle   |
 | 2.1.   |  Interface Segregation Principle | 
 | 2.1.   |  Dependancy Inversion Principle. |
- -------  ----------------------------------
+| -------  -------------------------------- |
 | 3      | Case Studies                     |
  -------   ---------------------------------
 
