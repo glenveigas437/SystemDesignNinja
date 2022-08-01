@@ -47,12 +47,12 @@ order1.payOrder('Debit Card', 437)
 
 ```
 
-|Output                                                               |
+| Output                                                               |
  --------------------------------------------------------------------
 | Your Total Bill is $5900                                            |
-| 1 / 8 / 2022 - 18 : 30 : 50: Paying for your order via : Debit Card
-  1 / 8 / 2022 - 18 : 31 : 0: Verifiying your Security Code: 437
-  1 / 8 / 2022 - 18 : 31 : 0: SUCCESS!                                |
+| 1 / 8 / 2022 - 18 : 30 : 50: Paying for your order via : Debit Card |
+| 1 / 8 / 2022 - 18 : 31 : 0: Verifiying your Security Code: 437      |
+| 1 / 8 / 2022 - 18 : 31 : 0: SUCCESS!                                |
 
 
 this piece of code replicates the functionality of an Online Shopping system like Amazon where there is a class named ```Order```
