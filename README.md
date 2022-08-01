@@ -59,7 +59,7 @@ Tools required
 | Sr. No.|        Topic                     |
 | ------ | ------------------------------   |
 | 1      |  Object Oriented Principles      |
-| 2      |  S.O.L.I.D Principles            |
+| 2      |  [S.O.L.I.D Principles](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md)            |
 | 2.1    |  Single Responsibility Principle |
 | 2.2.   |  Open Close Principle            |
 | 2.3.   |  Liskov Substitution Principle   |
