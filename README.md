@@ -35,11 +35,10 @@ These are my System Design notes that helped me to comprehend the key concepts o
 <a href="https://codeforces.com/profile/gkcs" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/codeforces.svg" alt="codeforces.com" height="30" width="40" /></a>
 </p>
 
-## Arjan Egges<br>
+## [Arjan Egges](https://github.com/ArjanCodes)<br>
 <p align="left">
-<a href="https://www.linkedin.com/in/gkcs" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="linkedin.com" height="30" width="40" /></a>
-<a href="https://www.youtube.com/c/UCRPMAqdtSgd0Ipeef7iFsKw" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/youtube.svg" alt="youtube.com" height="30" width="40" /></a>
-<a href="https://codeforces.com/profile/gkcs" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/codeforces.svg" alt="codeforces.com" height="30" width="40" /></a>
+<a href="https://www.linkedin.com/in/arjanegges/?original_referer=https%3A%2F%2Fwww%2Egoogle%2Ecom%2F&originalSubdomain=nl" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="linkedin.com" height="30" width="40" /></a>
+<a href="https://www.youtube.com/c/ArjanCodes/" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/youtube.svg" alt="youtube.com" height="30" width="40" /></a>
 </p>
 
 
