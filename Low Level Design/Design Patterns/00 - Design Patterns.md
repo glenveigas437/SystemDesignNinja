@@ -3,9 +3,9 @@
 In Software Enginnering, Design Patterns are highly essential, as they narrow down the commonly occurring problems in software design to one general solution that can be reused.
 
 Mainly there are 3 types of design patterns
-i) Creational Design Patterns
-ii) Structural Design Patterns
-iii) Behavoiral Design Patterns
+- Creational Design Patterns
+- Structural Design Patterns
+- Behavoiral Design Patterns
 
 ## 1) Creational Design Patterns
 Creational as the name suggests means the process of creating some element. Creational Design Patterns deal with creation of classes and objects.
@@ -48,7 +48,7 @@ Types of Behavoiral Design Patterns
  - Visitor Pattern
 
 
-Why Design Patterns?
+## Why Design Patterns?
 - Code can be reused: By far the prime reason why we make use of design patterns, by making use of Inheritance we can use same blocks of code in different modules of different projects tooo.
 
 - Promotes Transparency: Being Transparent helps a new developer to adapt and learn the functionalities of the code.
