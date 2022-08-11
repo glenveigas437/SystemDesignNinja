@@ -80,11 +80,13 @@ Tools required
 | 3.1.4. |  Prototype Pattern.                |
 | 3.1.5. |  Builder Pattern.                  |
 | 3.2.   |  Structural Design Pattern.        |
-| 3.2.1  |  Adapter Pattern.                  |
-| 3.2.2  |  Bridge Pattern.                   |
-| 3.2.3  |  Composite Pattern.                |
-| 3.2.4  |  Decorator Pattern.                |
-| 3.2.5  |  Facade Pattern.                   |
+| 3.2.1. |  Adapter Pattern.                  |
+| 3.2.2. |  Bridge Pattern.                   |
+| 3.2.3. |  Composite Pattern.                |
+| 3.2.4. |  Decorator Pattern.                |
+| 3.2.5. |  Facade Pattern.                   |
+| 3.2.6. |  Proxy Pattern.                    |
+| 3.2.7. |  Flywright Pattern.                |
 | 3.3.   |  Behavioral Design Patterns.       |
 | 3.3.1. |  Chain of Responsibility.          |
 | 3.3.2. |  Command Pattern.                  |
