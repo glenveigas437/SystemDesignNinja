@@ -72,7 +72,28 @@ Tools required
 | 2.3.   |  🔄[Liskov Substitution Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#3-liskov-responsibility-principle)  |
 | 2.4.   |  💻[Interface Segregation Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#4-interface-segregation-principle) | 
 | 2.5.   |  :busts_in_silhouette:[Dependancy Inversion Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#5-dependancy-inversion-principle) |
-| 3      |  Case Studies                    |
+| 3      |  Design Patterns.                  |
+| 3.1.   |  Creational Design Patterns.       |
+| 3.1.1. |  Factory Pattern.                  |
+| 3.1.2. |  Abstract Factory Pattern.         |
+| 3.1.3. |  Singleton Pattern.                |
+| 3.1.3.1|  Prototype Pattern.                |
+| 3.1.3.2|  Builder Pattern.                  |
+| 3.2.   |  Structural Design Pattern.        |
+| 3.2.1  |  Adapter Pattern.                  |
+| 3.2.2  |  Bridge Pattern.                   |
+| 3.2.3  |  Composite Pattern.                |
+| 3.2.4  |  Decorator Pattern.                |
+| 3.2.5  |  Facade Pattern.                   |
+| 3.3.   |  Behavioral Design Patterns.       |
+| 3.3.1. |  Chain of Responsibility.          |
+| 3.3.2. |  Command Pattern.                  |
+| 3.3.3. |  Interpreter Pattern.              |
+| 3.3.4. |  Iterator Pattern.                 |
+| 3.3.5. |  Mediator Pattern.                 |
+
+
+
 
 
 
