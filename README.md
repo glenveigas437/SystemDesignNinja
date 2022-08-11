@@ -77,8 +77,8 @@ Tools required
 | 3.1.1. |  Factory Pattern.                  |
 | 3.1.2. |  Abstract Factory Pattern.         |
 | 3.1.3. |  Singleton Pattern.                |
-| 3.1.3.1|  Prototype Pattern.                |
-| 3.1.3.2|  Builder Pattern.                  |
+| 3.1.4. |  Prototype Pattern.                |
+| 3.1.5. |  Builder Pattern.                  |
 | 3.2.   |  Structural Design Pattern.        |
 | 3.2.1  |  Adapter Pattern.                  |
 | 3.2.2  |  Bridge Pattern.                   |
