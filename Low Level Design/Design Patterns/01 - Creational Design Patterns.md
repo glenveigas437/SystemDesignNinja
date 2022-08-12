@@ -56,7 +56,8 @@ member2 = Member('Messi', 34, 'Rosario', False)
 
 def checkDeliveryDate(member):
     if member.isPrime:
-        return Prime(member.age).deliveryDates(datetime(2022, 8, 12))
+        primeMember=Prime(member.age)
+        return primeMember.deliveryDates(datetime(2022, 8, 12)), primeMember.getCost()
     else:
         return Regular(member.age).deliveryDates(datetime(2022, 8, 12))
         
@@ -68,7 +69,8 @@ checkDeliveryDate(member2)
 
 Output
 ```
-'Delivery Date is: 12 - 8 - 2022'
+('Delivery Date is: 12 - 8 - 2022', 'Subscription Price is: 999')
+
 'Delivery Date is: 22 - 8 - 2022'
 ```
 
