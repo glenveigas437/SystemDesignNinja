@@ -95,7 +95,7 @@ Tools required
 | 3.3.5. |  Mediator Pattern.                 |
 
 
-
+### P.S. I haven't copied or included any of their propreitary content via the aforementioned organisations/individuals, I am just sharing my work with a twist from all that I have learnt from these sources.
 
 
 
