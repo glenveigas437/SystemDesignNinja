@@ -78,3 +78,8 @@ So, as we can see in the above example, we have created 2 subclasses of the the 
 
 
 ## Abstract Factory Pattern
+
+Abstract Factory Pattern is combination or a set of multiple factory patterns, Now a factory pattern is created in the client side, but what if we want to create additional objects of new interfaces then we need to make changes in the client, what if there is a pattern where we don't have to mess with the client side, so we can add another layer of abstraction that can handle these changes.
+
+in the example above 
+
