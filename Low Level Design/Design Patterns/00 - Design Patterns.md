@@ -12,8 +12,8 @@ Creational as the name suggests means the process of creating some element. Crea
 They're very useful for lowering the level of dependency between our classes and controlling how the user interacts with them as well.
 
 Types of Creational Design Patterns
- - [Factory Pattern](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#1-factory-pattern)
- - [Abstract Factory Pattern](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#2-abstract-factory-pattern)
+ - [Factory Pattern](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#1---factory-pattern)
+ - [Abstract Factory Pattern](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#2---abstract-factory-pattern)
  - Builder Pattern
  - Prototype Pattern
  - Singleton Pattern
