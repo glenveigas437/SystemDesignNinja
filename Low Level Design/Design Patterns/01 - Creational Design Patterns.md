@@ -81,5 +81,88 @@ So, as we can see in the above example, we have created 2 subclasses of the the 
 
 Abstract Factory Pattern is combination or a set of multiple factory patterns, Now a factory pattern is created in the client side, but what if we want to create additional objects of new interfaces then we need to make changes in the client, what if there is a pattern where we don't have to mess with the client side, so we can add another layer of abstraction that can handle these changes.
 
-in the example above 
+in the example above we made use of an if-else condition to check for delivery dates of a prime and regular Amazon account user.
+Now, let's look at the example below
 
+
+```
+from abc import ABC, abstractmethod
+
+class Product(ABC):
+    @abstractmethod
+    def description(self):
+        pass
+        
+class Shirt(Product):
+    def description(self, brand, price):
+        return f"This is a dress shirt by {brand} worth Rs. {price}"
+
+class Trousers(Product):
+    def description(self, brand, price):
+        return f"This is a trouser by {brand} worth Rs. {price}"
+ 
+class Kurti(Product):
+    def description(self, brand, price):
+        return f"This is a Floral Top by {brand} worth Rs. {price}"
+
+class Leggings(Product):
+    def description(self, brand, price):
+        return f"This is a Legging by {brand} worth Rs. {price}"
+
+class Factory(ABC):
+    @abstractmethod
+    def getOutfit(self):
+        pass
+
+class MensClothingFactory(Factory):
+    def getOutfit(self, bill):
+        if bill.typeOfOutfit=='Top':
+            return Shirt().description(bill.brand, bill.price)
+        if bill.typeOfOutfit=='Pant':
+            return Trousers().description(bill.brand, bill.price)
+
+class WomensClothingFactory(Factory):
+    def getOutfit(self, bill):
+        if bill.typeOfOutfit=='Top':
+            return Kurti().description(bill.brand, bill.price)
+        if bill.typeOfOutfit=='Pant':
+            return Leggings().description(bill.brand, bill.price)
+            
+class Customer:
+    def __init__(self, name, gender):
+        self.name = name
+        self.gender = gender
+
+class Bill:
+    def __init__(self, brand, price, typeOfOutfit, customer):
+        self.brand = brand
+        self.price = price
+        self.typeOfOutfit = typeOfOutfit
+        self.customer = customer
+ 
+c1 = Customer('Chris', 'Male')
+c2 = Customer('Elsa', 'Female')
+
+b1 = Bill('Van Heusen', 1000, 'Top', c1)
+b2 = Bill('Gucci', 900, 'Top', c2)
+b3 = Bill('Allen Solly', 800, 'Pant', c1)
+b4 = Bill('Armani', 500, 'Pant', c2)
+
+def getBills(bill):
+    if bill.customer.gender=='Male':
+        return MensClothingFactory().getOutfit(bill)
+    else:
+        return WomensClothingFactory().getOutfit(bill)
+
+print(f"{getBills(b1)} \n {getBills(b3)}")
+print(f"{getBills(b2)} \n {getBills(b4)}")
+```
+
+#### OUTPUT
+
+```
+This is a dress shirt by Van Heusen worth Rs. 1000 
+This is a trouser by Allen Solly worth Rs. 800
+This is a Floral Top by Gucci worth Rs. 900 
+This is a Legging by Armani worth Rs. 500
+```
