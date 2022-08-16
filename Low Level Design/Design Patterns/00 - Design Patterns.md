@@ -7,7 +7,7 @@ Mainly there are 3 types of design patterns
 - [Structural Design Patterns](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/00%20-%20Design%20Patterns.md#2-structural-design-patterns)
 - [Behavoiral Design Patterns](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/00%20-%20Design%20Patterns.md#3-behavoiral-design-patterns)
 
-## 1) Creational Design Patterns
+## 1) [Creational Design Patterns](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md)
 Creational as the name suggests means the process of creating some element. Creational Design Patterns deal with creation of classes and objects.
 They're very useful for lowering the level of dependency between our classes and controlling how the user interacts with them as well.
 
