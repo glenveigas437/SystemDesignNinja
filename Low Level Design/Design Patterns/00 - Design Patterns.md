@@ -3,9 +3,9 @@
 In Software Enginnering, Design Patterns are highly essential, as they narrow down the commonly occurring problems in software design to one general solution that can be reused.
 
 Mainly there are 3 types of design patterns
-- Creational Design Patterns
-- Structural Design Patterns
-- Behavoiral Design Patterns
+- [Creational Design Patterns](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/00%20-%20Design%20Patterns.md#1-creational-design-patterns)
+- [Structural Design Patterns](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/00%20-%20Design%20Patterns.md#2-structural-design-patterns)
+- [Behavoiral Design Patterns](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/00%20-%20Design%20Patterns.md#3-behavoiral-design-patterns)
 
 ## 1) Creational Design Patterns
 Creational as the name suggests means the process of creating some element. Creational Design Patterns deal with creation of classes and objects.
