@@ -171,5 +171,17 @@ In the example above, There is one interface for different types of clothes whic
 
 So we can infer that if there are multiple items under one category we can wrap those items in Factory.
 
+## 3 - Singleton Pattern
+
+A Singleton is an object with two main characteristics:
+
+- It can have at most one instance
+- It should have global accessibiility in the program
+These properties are both important, although in practice you'll often hear people calling something a Singleton even if it has only one of these properties.
+
+Having only one instance is usually a mechanism for controlling access to some shared resource. For example, two threads may work with the same file, so instead of both opening it separately, a Singleton can provide a unique access point to both of them.
+
+Global accessibility is important because after your class has been instantiated once, you'd need to pass that single instance around in order to work with it. It can't be instantiated again. That's why it's easier to make sure that whenever you try to instantiate the class again, you just get the same instance you've already had.
+
 
 
