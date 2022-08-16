@@ -166,3 +166,10 @@ This is a trouser by Allen Solly worth Rs. 800
 This is a Floral Top by Gucci worth Rs. 900 
 This is a Legging by Armani worth Rs. 500
 ```
+
+In the example above, There is one interface for different types of clothes which is wrapped into one factory based on the dressing style, for e.g. if the customer is a man then it returns the factory of shirts and trousers, while dress and leggings are returned based on a woman's shopping preferences.
+
+So we can infer that if there are multiple items under one category we can wrap those items in Factory.
+
+
+
