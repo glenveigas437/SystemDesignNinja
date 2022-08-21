@@ -219,7 +219,7 @@ user1.getInstance()
 user2 = Game()
 ```
 
-### Output
+### OUTPUT
 
 ```
 #Object for user1
@@ -229,5 +229,7 @@ user2 = Game()
 Exception: You cannot create another user to the play this game
 
 ```
+
+## 4 - Prototype Pattern
 
 
