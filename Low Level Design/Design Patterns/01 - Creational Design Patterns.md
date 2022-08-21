@@ -183,5 +183,51 @@ Having only one instance is usually a mechanism for controlling access to some s
 
 Global accessibility is important because after your class has been instantiated once, you'd need to pass that single instance around in order to work with it. It can't be instantiated again. That's why it's easier to make sure that whenever you try to instantiate the class again, you just get the same instance you've already had.
 
+Have a look at the example below,
+Gaming companies these days restrict the installation of the software to multiple PCs, so let's try and implement something similar in this case.
+
+There is a class named ```Game```, with it's instance set to None.
+We create an obeject named ```user1``` as the sole user of the game, if another user is created then this Game won't be installed.
+
+```
+class Game:
+   __instance__ = None
+
+   def __init__(self):
+       """ Constructor.
+       """
+       if Game.__instance__ is None:
+           Game.__instance__ = self
+       else:
+           raise Exception("You cannot create another user to the play this game")
+
+   @staticmethod
+   def get_instance():
+       """ Static method to fetch the current instance.
+       """
+       if not Game.__instance__:
+           Game()
+       return Game.__instance__
+
+```
+
+```
+user1 = Game()
+user1.getInstance()
+
+#Creating another object leading to an Exception
+user2 = Game()
+```
+
+### Output
+
+```
+#Object for user1
+<__main__.Game at 0x10628cf10>
+
+#for object user2
+Exception: You cannot create another user to the play this game
+
+```
 
 
