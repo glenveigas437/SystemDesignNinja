@@ -232,4 +232,121 @@ Exception: You cannot create another user to the play this game
 
 ## 4 - Prototype Pattern
 
+Prototype Pattern is good for when creating new objects that require a lot of resources than required. In prototype pattern you just create a copy of the object and store it in memory.
+
+In Prototype Pattern, there is an interface that has a clone method and then multiple concrete classes have their independent clone methods.
+
+Here is an example of prototype pattern.
+In Amazon App there are many small applications, now instead of creating a new object of the concrete App classes, we make a copy of these applications and then access their content.
+
+```
+from abc import ABC, abstractmethod
+import copy
+
+class AmazonApp(ABC):
+    def __init__(self):
+        self.id = None
+        self.type = None
+    
+    @abstractmethod
+    def application(self):
+        pass
+    
+    def getID(self):
+        return self.id
+    
+    def getType(self):
+        return self.type
+    
+    def setID(self, newId):
+        self.id=newId
+    
+    def clone(self):
+        return copy.copy(self)
+
+class AmazonFresh(AmazonApp):
+    def __init__(self):
+        super().__init__()
+        self.type='Grocery Shopping'
+    
+    def application(self):
+        return f"This is a {self.type} App"
+ 
+ class AmazonTV(AmazonApp):
+    def __init__(self):
+        super().__init__()
+        self.type='Video Channel'
+    
+    def application(self):
+        return f"This is a {self.type} app"
+
+class AmazonPrime(AmazonApp):
+    def __init__(self):
+        super().__init__()
+        self.type='OTT Platform'
+    
+    def application(self):
+        return f"This is a {self.type} app"
+        
+class AmazonAppCache():
+    
+    cache={}
+    
+    @staticmethod
+    def getApp(appId):
+        App=AmazonAppCache.cache.get(appId, None)
+        return App.clone()
+    
+    @staticmethod
+    def load():
+        fresh=AmazonFresh()
+        fresh.setID(1)
+        AmazonAppCache.cache[fresh.getID()]=fresh
+    
+        ATV=AmazonTV()
+        ATV.setID(2)
+        AmazonAppCache.cache[ATV.getID()]=ATV
+        
+        prime=AmazonPrime()
+        prime.setID(3)
+        AmazonAppCache.cache[prime.getID()]=prime
+        
+def startApp():
+    AmazonAppCache().load()
+    
+    for key, value in AmazonAppCache().cache.items():
+        print(key, ":", value)
+    
+    choice = int(input("Select App: "))
+    if choice==1:
+        fresh=AmazonAppCache.getApp(choice)
+        print("Selected FRESH")
+        print(fresh.application())
+    
+    elif choice==2:
+        ATV=AmazonAppCache.getApp(choice)
+        print("Selected TV")
+        print(ATV.application())
+    
+    else:
+        prime=AmazonAppCache.getApp(choice)
+        print("Selected PRIME")
+        print(prime.application())
+ 
+startApp()
+```
+
+### OUTPUT
+
+```
+1 : <__main__.AmazonFresh object at 0x107827220>
+2 : <__main__.AmazonTV object at 0x107827190>
+3 : <__main__.AmazonPrime object at 0x1072b8040>
+
+Select App: 3
+
+Selected PRIME
+This is a OTT Platform app
+
+```
 
