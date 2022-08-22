@@ -79,20 +79,13 @@ Tools required
 | 3.1.3. |  👨 [Singleton Pattern.](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#3---singleton-pattern)                |
 | 3.1.4. |  🤖 [Prototype Pattern.](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#4---prototype-pattern)                |
 | 3.1.5. |  🏗️ Builder Pattern.                  |
+| 3.1.6. |  :eyes:   Observer Pattern.                 |
 | 3.2.   |  🏠 Structural Design Pattern.        |
 | 3.2.1. |  Adapter Pattern.                  |
-| 3.2.2. |  Bridge Pattern.                   |
-| 3.2.3. |  Composite Pattern.                |
 | 3.2.4. |  Decorator Pattern.                |
 | 3.2.5. |  Facade Pattern.                   |
 | 3.2.6. |  Proxy Pattern.                    |
-| 3.2.7. |  Flywright Pattern.                |
-| 3.3.   |  Behavioral Design Patterns.       |
-| 3.3.1. |  Chain of Responsibility.          |
-| 3.3.2. |  Command Pattern.                  |
-| 3.3.3. |  Interpreter Pattern.              |
-| 3.3.4. |  Iterator Pattern.                 |
-| 3.3.5. |  Mediator Pattern.                 |
+
 
 
 ### P.S. I haven't copied or included any of their propreitary content via the aforementioned organisations/individuals, I am just sharing my work with a twist from all that I have learnt from these sources.
