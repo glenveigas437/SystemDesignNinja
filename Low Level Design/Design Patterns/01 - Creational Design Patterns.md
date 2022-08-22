@@ -346,7 +346,7 @@ startApp()
 Select App: 3
 
 Selected PRIME
-This is a OTT Platform app
+This is an OTT Platform app
 
 ```
 
