@@ -588,3 +588,5 @@ iPhone 13 - The Discount value is 25% of the given price
 MacBook Pro - The Discount value is 50% of the given price
 iPad Air - The Discount value is 75% of the given price
 ```
+
+## 7 - Observer Pattern
