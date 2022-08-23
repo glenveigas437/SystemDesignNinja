@@ -72,7 +72,7 @@ Tools required
 | 2.3.   |  🔄 [Liskov Substitution Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#3-liskov-responsibility-principle)  |
 | 2.4.   |  💻 [Interface Segregation Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#4-interface-segregation-principle) | 
 | 2.5.   |  👥 [Dependancy Inversion Principle](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/SOLID%20Principles/00%20-%20SOLID.md#5-dependancy-inversion-principle) |
-| 3      |  🖌️ [Design Patterns.](https://github.com/glenveigas437/SystemDesignNinja/tree/main/Low%20Level%20Design/Design%20Patterns)                  |
+| 3      |  🖌️ [***Design Patterns.***](https://github.com/glenveigas437/SystemDesignNinja/tree/main/Low%20Level%20Design/Design%20Patterns)                  |
 | 3.1.   |  📝 [**Creational Design Patterns**.](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md)       |
 | 3.1.1. |  🪛 [Factory Pattern.](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#1---factory-pattern)                  |
 | 3.1.2. |  🧰 [Abstract Factory Pattern.](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#2---abstract-factory-pattern)         |
