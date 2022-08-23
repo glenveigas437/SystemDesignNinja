@@ -350,3 +350,19 @@ This is an OTT Platform app
 
 ```
 
+## 5 - Builder Pattern
+
+he Builder Pattern is a creational pattern whose intent is to separate the construction of a complex object from its representation so that you can use the same construction process to create different representations.
+
+The Builder Pattern tries to solve,
+
+How can a class that includes creating a complex object be simplified?
+How can a class create different representations of a complex object?
+The Builder and Factory patterns are very similar in the fact they both instantiate new objects at runtime. The difference is when the process of creating the object is more complex, so rather than the Factory returning a new instance of ObjectA, it calls the builders director constructor method ObjectA.construct() that goes through a more complex construction process involving several steps. Both return an Object/Product.
+
+The Key terminologies in this pattern are
+1) Builder  - (interface, concrete builder)
+2) Director - (The place where the concrete builder is called)
+3) Client - (Invokes the director)
+
+<u>Interface</u>
