@@ -459,3 +459,132 @@ This is a movie of Adventure where This is a superhero action Movie and is only 
 
 In this example you can see that the end Product we are building is a Movie, to be specific the details of the movie
 With ```MovieBuilderInterface``` describing the skeleton of the Movie and ```MovieBuilder``` loading the details of the movie and the Product ```Movie``` being called in.
+
+
+## 6 - Strategy Pattern
+
+the strategy pattern (also known as the policy pattern) is a behavioral software design pattern that enables selecting an algorithm at runtime. Instead of implementing a single algorithm directly, code receives run-time instructions as to which in a family of algorithms to use.[
+
+
+For example
+Consider a class Named Vehicle which has an abstract method named drive, now each type of vehicle - Bus, Truck, Car have their own implementation of drive methods, we observe that the the dirve nethod of Bus and Truck is the same, this problem doesn't promote the reusability of code.
+
+To solve this problem we further divide the drive method based on their characteristics and define them as derived classes.
+
+Below is an example of Amazon Shopping site displaying the discount of products.
+
+
+```
+from abc import ABC, abstractmethod
+
+
+
+#Statergy
+class DiscountStrategy(ABC):
+    
+    @abstractmethod
+    def givenDiscount(self):
+        pass
+
+#Different Types of discount strategies
+class FlatHalfDiscountStrategy(DiscountStrategy):
+    
+    def givenDiscount(self):
+        return f"The Discount value is 50% of the given price"
+
+
+class FlatQuarterDiscountStrategy(DiscountStrategy):
+    
+    def givenDiscount(self):
+        return f"The Discount value is 25% of the given price"
+        
+
+class BigDiscountStrategy(DiscountStrategy):
+    
+    def givenDiscount(self):
+        return f"The Discount value is 75% of the given price"
+
+
+
+
+class Discount(ABC):
+    
+    def __init__(self, obj):
+        self.obj = obj
+    
+    def discountConstruct(self):
+        return self.obj.givenDiscount()
+
+
+
+
+class FlatHalfDiscount(Discount):
+    def __init__(self):
+        super().__init__(FlatHalfDiscountStrategy())
+
+
+
+
+class FlatQuarterDiscount(Discount):
+    def __init__(self):
+        super().__init__(FlatQuarterDiscountStrategy())
+
+
+
+class FlatBigDiscount(Discount):
+    def __init__(self):
+        super().__init__(BigDiscountStrategy())
+
+
+
+class Product(ABC):
+    def __init__(self, productName, productDiscount):
+        self.productName = productName
+        self.productDiscount = productDiscount
+
+
+class Phone(Product):
+    def __init__(self):
+        super().__init__('iPhone 13', FlatQuarterDiscount())
+
+
+class Laptop(Product):
+    def __init__(self):
+        super().__init__('MacBook Pro', FlatHalfDiscount())
+
+
+class Tablet(Product):
+    def __init__(self):
+        super().__init__('iPad Air',FlatBigDiscount())
+
+
+
+class Main:
+    def __init__(self, product):
+        self.product = product()
+    
+    def getDiscountPrice(self):
+        return f"{self.product.productName} - {self.product.productDiscount.discountConstruct()}"
+
+
+
+
+
+phone=Main(Phone)
+laptop=Main(Laptop)
+tablet=Main(Tablet)
+
+
+
+print(phone.getDiscountPrice())
+print(laptop.getDiscountPrice())
+print(tablet.getDiscountPrice())
+```
+
+### OUTPUT
+
+```
+iPhone 13 - The Discount value is 25% of the given price
+MacBook Pro - The Discount value is 50% of the given price
+iPad Air - The Discount value is 75% of the given price
+```
