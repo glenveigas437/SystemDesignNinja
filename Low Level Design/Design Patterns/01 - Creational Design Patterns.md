@@ -364,5 +364,98 @@ The Key terminologies in this pattern are
 1) Builder  - (interface, concrete builder)
 2) Director - (The place where the concrete builder is called)
 3) Client - (Invokes the director)
+4) Product - (The product being built)
 
-<u>Interface</u>
+<ins>Builder Interface</ins>: The skeleton of the entire Application
+<ins>Director</ins>: Inherits the Builder Interface
+<ins>Client</ins>: Calls the director and builds the product
+
+Here is an example with Amazon Prime Video
+
+```
+from abc import ABC, abstractmethod
+
+#Interface
+class MovieBuilderInterface(ABC):
+    
+    @abstractmethod
+    def setMovieGenre(genre):
+        pass
+    
+    @abstractmethod
+    def setMovieDescription(desc):
+        pass
+    
+    @abstractmethod
+    def setMovieAgeLimit(ageLimit):
+        pass
+    
+    @abstractmethod
+    def setNumberOfActors(actors):
+        pass
+    
+    @abstractmethod
+    def getResult():
+        pass
+ 
+ #Product
+ class Movie():
+    def __init__(self, genre='Genre', desc='Desc', ageLimit=0, actors=0):
+        self.genre = genre
+        self.desc = desc
+        self.ageLimit = ageLimit
+        self.actors = actors
+    
+    def constructor(self):
+        print(f"This is a movie of {self.genre} where {self.desc} and is only for audience above {self.ageLimit} years of age, also this movie has {self.actors} movie stars in it.")
+
+
+#Builder
+class MovieBuilder(MovieBuilderInterface):
+    def __init__(self):
+        self.movie = Movie()
+    
+    def setMovieGenre(self, genre):
+        self.movie.genre = genre
+        return self
+    
+    def setMovieDescription(self, desc):
+        self.movie.desc = desc
+        return self
+        
+    def setMovieAgeLimit(self, ageLimit):
+        self.movie.ageLimit = ageLimit
+        return self
+    
+    def setNumberOfActors(self, actors):
+        self.movie.actors = actors
+        return self
+    
+    def getResult(self):
+        return self.movie
+        
+#Director
+class Avengers:
+    @staticmethod
+    def construct():
+        return MovieBuilder()\
+                .setMovieGenre('Adventure')\
+                .setMovieDescription('This is a superhero action Movie')\
+                .setMovieAgeLimit(12)\
+                .setNumberOfActors(8)\
+                .getResult()
+
+#Object
+avengers=Avengers.construct()
+avengers.constructor()
+
+```
+
+### OUTPUT
+
+```
+This is a movie of Adventure where This is a superhero action Movie and is only for audience above 12 years of age, also this movie has 8 movie stars in it.
+```
+
+In this example you can see that the end Product we are building is a Movie, to be specific the details of the movie
+With ```MovieBuilderInterface``` describing the skeleton of the Movie and ```MovieBuilder``` loading the details of the movie and the Product ```Movie``` being called in.
