@@ -79,7 +79,7 @@ Tools required
 | 3.1.3. |  👨 [Singleton Pattern.](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#3---singleton-pattern)                |
 | 3.1.4. |  🤖 [Prototype Pattern.](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#4---prototype-pattern)                |
 | 3.1.5. |  🏗️  [Builder Pattern.](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#5---builder-pattern)                  |
-| 3.1.6. |  🏃: [Strategy Pattern.] (https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#6---strategy-pattern)                 |
+| 3.1.6. |  🏃 [Strategy Pattern.](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#6---strategy-pattern)                 |
 | 3.1.7. |  :eyes:   [Observer Pattern.](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#7---observer-pattern)                 |
 | 3.2.   |  🏠 Structural Design Pattern.      |
 | 3.2.1. |  Adapter Pattern.                  |
