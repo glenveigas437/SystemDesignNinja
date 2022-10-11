@@ -591,4 +591,4 @@ iPad Air - The Discount value is 75% of the given price
 
 ## 7 - Observer Pattern
 
-To understand observer pattern well, I have included this section in the case Study - [Design Notify Me Button in Amazon]
+To understand observer pattern well, I have included this section in the case Study - [Design Notify Me Button in Amazon](https://github.com/glenveigas437/SystemDesignNinja/tree/main/Low%20Level%20Design/Case%20Studies/07%20-%20Design%20Notify%20Me%20Button%20in%20Amazon/Code)
