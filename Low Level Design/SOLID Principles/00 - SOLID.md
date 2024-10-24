@@ -118,429 +118,257 @@ Open & Close display polarity in their literal meanings and so is this concept e
 - Open: Open to extention of functionalities
 - Close: Close to modification of existing functions
 
-Now if I try to edit the class Payment I can add a few more if else conditions when I add new payment methods but this will violate the basic rule of Open Close Principle (i.e editing or modifying the current function/class)
+**Violation in the above code**:
+**Problem**: The checkout method is not open for extension but open for modification. Every time a new payment method or notification type is introduced (e.g., adding PayPal, or sending push notifications), you’ll need to modify the existing method.
 
-Here is the fix to it
-- Create a new interface (Abstract Class in Python) and then extend the interfaces with new Payment Method classes
+**Why it's bad:**
 
-Interface/Abstract Class
-In Python we need to import ABC and abstractmethod from the library abc in order to implement interfaces
+Every time you change the logic inside checkout, you risk breaking the current functionality. The system should allow new features (like new payment methods) to be added without modifying the existing code.
+This design is rigid and not future-proof.
+
+We’ll make the system open for extension by abstracting the payment methods into separate classes. This way, we can easily add new payment types without modifying the existing OnlineStore class.
 
 This is the interface
 ```
+from abc import ABC, abstractmethod
+
 class PaymentMethod(ABC):
     @abstractmethod
-    def pay(self):
+    def process(self, customer):
         pass
-```
-
-Different Payment Classes extending the PaymentMethod interface
-```
-class DebitCardPayment(PaymentMethod):
-    def pay(self, order, secretKey):
-        print("Paying via Debit Card")
-        print(f"Authenticating {secretKey}")
-        order.status = "Paid"
 
 class CreditCardPayment(PaymentMethod):
-    def pay(self, order, secretKey):
-        print("Paying via Credit Card")
-        print(f"Authenticating {secretKey}")
-        order.status = "Paid"
-        
-class UPI(PaymentMethod):
-    def pay(self, order, secretKey):
-        print("Paying via UPI")
-        print(f"Authenticating {secretKey}")
-        order.status = "Paid"
+    def process(self, customer):
+        print(f"Processing credit card payment for {customer}")
 
-class PayPal(PaymentMethod):
-    def pay(self, order, secretKey):
-        print("Paying via PayPal")
-        print(f"Authenticating {secretKey}")
-        order.status = "Paid"
+class CashPayment(PaymentMethod):
+    def process(self, customer):
+        print(f"Processing cash payment for {customer}")
 
+class OnlineStore:
+    def __init__(self):
+        self.items = []
 
-PayPal().pay(order1,437)
+    def add_item(self, item):
+        self.items.append(item)
+
+    def checkout(self, payment_method: PaymentMethod, customer):
+        payment_method.process(customer)
+
+        inventory_manager = InventoryManager()
+        inventory_manager.update_inventory(self.items)
+
+        notification_service = NotificationService()
+        notification_service.send_notification(customer, "Thank you for your purchase!")
 ```
 
-### Output
-Paying via PayPal
+```
+online_store = OnlineStore()
+online_store.add_item('Laptop')
+online_store.checkout(CreditCardPayment(), 'customer@example.com')
+```
 
-Authenticating 437
+**OUTPUT**
+```
+Processing credit card payment for customer@example.com
+Updating inventory for Laptop
+Sending email to customer@example.com: Thank you for your purchase!
+```
 
-In this manner we are open to adding new payment methods like Cash On Delivery or Apple Pay, etc. but in the same manner we are not editing any of the pre-existing code.
+In this manner we are open to adding new payment methods like Cash On Delivery, PayPal or Apple Pay, etc. but in the same manner we are not editing any of the pre-existing code.
+
+```
+class PayPalPayment(PaymentMethod):
+    def process(self, customer):
+        print(f"Processing PayPal payment for {customer}")
+```
+
+**Real-World Example:**
+In a store, imagine you have different payment terminals for credit cards, cash, and PayPal. The terminals don’t need to be modified when a new payment method is introduced; you just add a new terminal.
 
 
 ## 3) Liskov Substitution Principle
-What if 2 of the payment methods like Debit and Credit Card required security codes and PayPal required email address for authentication purpose, so we would now how to change the entire piece of code for every Payment Method child classes we have created, seems right? but No, this violates the Liskov Substitution Principle instead we need to create initializers for the authentication types we are creating.
+**Definition**: Objects of a subclass should be replaceable with objects of the superclass without breaking the system.
 
-Liskov Substitution Principle states that if we have objects in the program then we need to replace those objects with instances or sub-classes without altering the correctness of the program.
+**In simple terms:** If class B is a subclass of class A, then B should be able to replace A without any issues.
 
-Now instead of providing ```securityKey``` while paying via PayPal we use email address for validation and to achieve this we make use of initializers
+**Problem:** In this case, although it's not explicitly written, the violation will happen when you try to replace this with a different class. For example, if you subclass OnlineStore and change how checkout works but it no longer supports the add_item method in the same way, or doesn't update the inventory correctly, that would violate LSP.
 
-Here's the fix to it.
-
-Removing the ```secretKey``` variable from each function as a parameter and initializing it for Debit, credit and UPI payment methods
+Let’s assume you extend the store to support different types of stores (e.g., physical store vs. online store). You need to ensure that subclasses can be used interchangeably without breaking the system.
 
 ```
-class DebitCardPayment(PaymentMethod):
-    def __init__(self, secretKey):
-        self.secretKey = secretKey
-    
-    def pay(self, order):
-        print("Paying via Debit Card")
-        print(f"Authenticating {self.secretKey}")
-        order.status = "Paid"
- 
-class CreditCardPayment(PaymentMethod):
-    def __init__(self, secretKey):
-        self.secretKey = secretKey
-        
-    def pay(self, order):
-        print("Paying via Credit Card")
-        print(f"Authenticating {self.secretKey}")
-        order.status = "Paid"
+class Store(ABC):
+    @abstractmethod
+    def checkout(self, payment_method, customer):
+        pass
 
-class UPI(PaymentMethod):
-    def __init__(self, secretKey):
-        self.secretKey = secretKey
-    
-    def pay(self, order):
-        print("Paying via UPI")
-        print(f"Authenticating {self.secretKey}")
-        order.status = "Paid"
-        
-class PayPal(PaymentMethod):
-    def __init__(self, emailAddress):
-        self.emailAddress = emailAddress
-        
-    def pay(self, order):
-        print("Paying via PayPal")
-        print(f"Authenticating {self.emailAddress}")
-        order.status = "Paid"
-        
-order1=Order()
-order2=Order()
+class OnlineStore(Store):
+    def checkout(self, payment_method, customer):
+        print(f"Processing online store checkout for {customer}")
 
-order1.addItem('MacBook Pro M1 2022', 1, 1000)
-order1.addItem('iPhone 13', 2, 1500)
-order1.addItem('iPad Pro 2022', 1, 700)
-order1.addItem('MacBook Air M2 2022', 1, 1200)
-
-order2.addItem('Apple Watch Series 7', 1, 400)
-order2.addItem('iPhone 13', 3, 1500)
-order2.addItem('MacBook Pro M2 2022', 1, 1400)
-
-order1.totalPrice()
-
-PayPal('abc@gmail.com').pay(order1)
-
-order2.totalPrice()
-CreditCardPayment(437).pay(order2)
-
+class PhysicalStore(Store):
+    def checkout(self, payment_method, customer):
+        print(f"Processing physical store checkout for {customer}")
 ```
 
+Both stores now support checkout, and the system can substitute an OnlineStore with a PhysicalStore without any issues.
 
-## OUTPUT
-### Order1
-Your Total Bill is $5900
+**In the real world:**
 
-Paying via PayPal
-
-Authenticating abc@gmail.com
-
-### Order2
-Your Total Bill is $6300
-
-Paying via Credit Card
-
-Authenticating 437
-
+**Example**: Suppose in a warehouse, you use robots for inventory updates. If one robot is replaced by another, it should work the same way. If the replacement robot can't access the stockroom or update the inventory correctly, it would cause chaos.
 
 ## 4) Interface Segregation Principle
 
-Interface Segregation Principle states that instead of having one general purpose interface we can multiple interfaces so the subclasses have more meaningful behaviour.
+**Definition:** A class should not be forced to implement interfaces it does not use.
 
-When you pay via Debit Card and PayPal you need to authenticate the payment via SMS but not via Credit Card.
+**In simple terms:** Don’t make classes implement methods they don’t need.
 
-So we now add another abstract method in our PaymentMode Interface in order to add another layer of authentication of SMS
+
+**Problem:** There’s no clear interface segregation here, but when this code expands, adding more and more unrelated features to OnlineStore, the class will start to become overburdened. If you later want to reuse parts of the system (say for payment or notification handling), you'll be forced to deal with unnecessary methods that you don't need.
+
+**In the real world:
+
+Example:** Imagine if a payment terminal in a store is also responsible for turning on the lights or controlling the store's air conditioning. The device would be overloaded with responsibilities it doesn't need.
+
+We’ll break down large, unwieldy interfaces into smaller, more specific ones. This way, classes only implement what they actually need.
+
+You can apply the Interface Segregation Principle (ISP) by creating separate authentication mechanisms for different payment methods—one for SMS-based authentication and another for PIN-based authentication. This approach will allow each payment method to use the appropriate authentication class without being burdened by unnecessary methods or logic.
 
 ```
-class PaymentMethod(ABC):
+from abc import ABC, abstractmethod
+
+class AuthenticationInterface(ABC):
     @abstractmethod
-    def pay(self):
+    def authenticate(self, customer):
         pass
+
+class SMSAuth(AuthenticationInterface):
+    def authenticate(self, customer):
+        print(f"Sending SMS to {customer} for authentication.")
+
+class PINAuth(AuthenticationInterface):
+    def authenticate(self, customer):
+        print(f"Requesting PIN from {customer} for UPI authentication.")
+
+
+class PaymentMethod(ABC):
+    def __init__(self, auth_method: AuthenticationInterface):
+        self.auth_method = auth_method
     
     @abstractmethod
-    def authenticateSMS(self):
+    def process_payment(self, customer):
         pass
-```
 
-So, now we add this in our sub classes as well
+class CreditCardPayment(PaymentMethod):
+    def process_payment(self, customer):
+        print(f"Processing credit card payment for {customer}")
+        self.auth_method.authenticate(customer)
 
-```
 class DebitCardPayment(PaymentMethod):
-    def __init__(self, secretKey):
-        self.secretKey = secretKey
-        self.verified = False
-    
-    def authenticateSMS(self):
-        print("authenticated via SMS)
-        self.verified = True
-    
-    def pay(self, order):
-        print("Paying via Debit Card")
-        print(f"Authenticating {self.secretKey}")
-        order.status = "Paid"
- 
-class CreditCardPayment(PaymentMethod):
-    def __init__(self, secretKey):
-        self.secretKey = secretKey
-    
-    def authenticateSMS(self):
-        raise Exception(f"No Authentication required via SMS")
-    
-    def pay(self, order):
-        print("Paying via Credit Card")
-        print(f"Authenticating {self.secretKey}")
-        order.status = "Paid"
+    def process_payment(self, customer):
+        print(f"Processing debit card payment for {customer}")
+        self.auth_method.authenticate(customer)
 
-class UPI(PaymentMethod):
-    def __init__(self, secretKey):
-        self.secretKey = secretKey
-    
-    def authenticateSMS(self):
-        raise Exception(f"No Authentication required via SMS")
-        
-    def pay(self, order):
-        print("Paying via UPI")
-        print(f"Authenticating {self.secretKey}")
-        order.status = "Paid"
-        
-class PayPal(PaymentMethod):
-    def __init__(self, emailAddress):
-        self.emailAddress = emailAddress
-        self.verified = True
-    
-    def authenticateSMS(self):
-        print("authenticated via SMS)
-        self.verified = True
-        
-    def pay(self, order):
-        print("Paying via PayPal")
-        print(f"Authenticating {self.emailAddress}")
-        order.status = "Paid"
-
-```
-
-Adding another function does satisfy Interface Segregation Principle but violates Liskov Substitution Principle, now the general objective of following the S.O.L.I.D Principles is that while satisfying the need of one principle the other principles should not be compromised. So this solution above is not acceptbale, instead we can create another class and extend the PaymentMethod interface in order to add another layer of authentication of SMS verification.
-
-```
-class PaymentMethod(ABC):
-    @abstractmethod
-    def pay(self):
-        pass
+class UPIPayment(PaymentMethod):
+    def process_payment(self, customer):
+        print(f"Processing UPI payment for {customer}")
+        self.auth_method.authenticate(customer)
 ```
 
 ```
-class SMSAuthenticator(PaymentMethod)
-    @abstractmethod
-    def authenticateSMS(self):
-        pass
+# Creating instances with specific authentication mechanisms
+credit_payment = CreditCardPayment(SMSAuth())
+debit_payment = DebitCardPayment(SMSAuth())
+upi_payment = UPIPayment(PINAuth())
+
+# Simulating the payment process
+credit_payment.process_payment("customer@example.com")
+debit_payment.process_payment("customer2@example.com")
+upi_payment.process_payment("customer3@example.com")
 ```
 
-
+**OUTPUT**
 ```
-class DebitCardPayment(SMSAuthenticator):
-    def __init__(self, secretKey):
-        self.secretKey = secretKey
-        self.verified = False
-    
-    def authenticateSMS(self):
-        print("authenticated via SMS)
-        self.verified = True
-    
-    def pay(self, order):
-        if not self.verified:
-            raise Exception(f"Not verified")
-        print("Paying via Debit Card")
-        print(f"Authenticating {self.secretKey}")
-        order.status = "Paid"
- 
-class CreditCardPayment(PaymentMethod):
-    def __init__(self, secretKey):
-        self.secretKey = secretKey
-    
-    def pay(self, order):
-        print("Paying via Credit Card")
-        print(f"Authenticating {self.secretKey}")
-        order.status = "Paid"
+Processing credit card payment for customer@example.com
+Sending SMS to customer@example.com for authentication.
 
-class UPI(PaymentMethod):
-    def __init__(self, secretKey):
-        self.secretKey = secretKey
-    
-    def pay(self, order):
-        print("Paying via UPI")
-        print(f"Authenticating {self.secretKey}")
-        order.status = "Paid"
-        
-class PayPal(SMSAuthenticator):
-    def __init__(self, emailAddress):
-        self.emailAddress = emailAddress
-        self.verified = True
-    
-    def authenticateSMS(self):
-        print("authenticated via SMS)
-        self.verified = True
-        
-    def pay(self, order):
-        print("Paying via PayPal")
-        print(f"Authenticating {self.emailAddress}")
-        order.status = "Paid"
+Processing debit card payment for customer2@example.com
+Sending SMS to customer2@example.com for authentication.
 
-
-order1=Order()
-
-order1.addItem('MacBook Pro M1 2022', 1, 1000)
-order1.addItem('iPhone 13', 2, 1500)
-order1.addItem('iPad Pro 2022', 1, 700)
-order1.addItem('MacBook Air M2 2022', 1, 1200)
-
-
-order1.totalPrice()
-
-pp1=PayPal('abc@gmail.com')
-pp1.authenticateSMS()
-pp1.pay(order1)
+Processing UPI payment for customer3@example.com
+Requesting PIN from customer3@example.com for UPI authentication.
 ```
-
-### OUTPUT
-
-Your Total Bill is $5900
-
-Authenticating via SMS!
-
-Paying via PayPal
-
-Authenticating abc@gmail.com
-
-Instead of applying this solution with classes and sub-classes we can make use of compositions which is usefull and better for this solution.
-
-we create a separate class named ```SMSAuth``` that handles authentication
-this class has 2 methods 1) to verify the code 2) to check authorization
-
-```
-class SMSAuth:
-    authorized = False
-    
-    def verifyCode(self, code):
-        print(f"{code} has been verified")
-        self.authorized = True
-     
-    def isAuthorized(self):
-        return self.authorized
-```
-```
-class DebitCardPayment(SMSAuthenticator):
-
-    def __init__(self, secretKey, authorizer):
-        self.authorizer = authorizzer
-        self.secretKey = secretKey
-    
-    def authenticateSMS(self):
-        print("authenticated via SMS)
-        self.verified = True
-    
-    def pay(self, order):
-        if not authorizer.isAuthorized:
-            raise Exception(f"Not verified")
-        print("Paying via Debit Card")
-        print(f"Authenticating {self.secretKey}")
-        order.status = "Paid"
-
-
-order1=Order()
-
-order1.addItem('MacBook Pro M1 2022', 1, 1000)
-order1.addItem('iPhone 13', 2, 1500)
-order1.addItem('iPad Pro 2022', 1, 700)
-order1.addItem('MacBook Air M2 2022', 1, 1200)
-
-
-order1.totalPrice()
-
-authorizer=SMSAuth
-dbc=DebitCardPayment(437, authorizer)
-authorizer.verifyCode(437)
-dbc.pay(order1)
-```
-
 
 
 ## 5) Dependancy Inversion Principle
 
-Dependency Inversion means that the code should be dependant on abstractions not on any subclasses. The solution above violates this principle.
+Definition: High-level modules should not depend on low-level modules. Both should depend on abstractions (interfaces).
 
-In this example, we will create another class named ```Authorizer``` that will be extended in the  ```SMSAuth``` class
+In simple terms: Instead of classes depending directly on concrete implementations, they should rely on interfaces or abstract classes.
+
+
+**Problem:** The checkout method directly depends on low-level details like sending emails or processing payments. There are no abstractions, making the OnlineStore tightly coupled with these implementations. If you want to change the notification method (e.g., to send push notifications), you'll have to modify the class.
+
+**In the real world:
+
+Example:** In a store, instead of manually sending a message to customers after each purchase, you’d want a system where different communication channels can be easily swapped in and out without changing the whole store’s operation.
 
 ```
-class Authorizer
+from abc import ABC, abstractmethod
+
+class PaymentProcessor(ABC):
     @abstractmethod
-    def isAuthorized(self):
+    def process_payment(self, amount):
         pass
+
+
+class CreditCardPayment(PaymentProcessor):
+    def process_payment(self, amount):
+        print(f"Processing credit card payment of {amount}")
+
+class DebitCardPayment(PaymentProcessor):
+    def process_payment(self, amount):
+        print(f"Processing debit card payment of {amount}")
+
+class UPIPayment(PaymentProcessor):
+    def process_payment(self, amount):
+        print(f"Processing UPI payment of {amount}")
+
+
+class OnlineStore:
+    def __init__(self, payment_processor: PaymentProcessor):
+        self.payment_processor = payment_processor
+
+    def checkout(self, amount):
+        self.payment_processor.process_payment(amount)
+
+
+# Creating instances with different payment methods
+credit_store = OnlineStore(CreditCardPayment())
+debit_store = OnlineStore(DebitCardPayment())
+upi_store = OnlineStore(UPIPayment())
+
+# Process payments
+credit_store.checkout(100)  # Processing credit card payment of 100
+debit_store.checkout(200)   # Processing debit card payment of 200
+upi_store.checkout(300)     # Processing UPI payment of 300
 ```
 
+**OUTPUT**
 ```
-class SMSAuth(Authorizer):
-    authorized = False
-    
-    def verifyCode(self, code):
-        print(f"{code} has been verified")
-        self.authorized = True
-     
-    def isAuthorized(self):
-        return self.authorized
+Processing credit card payment of 100
+Processing debit card payment of 200
+Processing UPI payment of 300
 ```
-```
-class DebitCardPayment(SMSAuthenticator):
+**Real World:** 
+Imagine a restaurant:
 
-    def __init__(self, secretKey, authorizer):
-        self.authorizer = authorizzer
-        self.secretKey = secretKey
-    
-    def authenticateSMS(self):
-        print("authenticated via SMS)
-        self.verified = True
-    
-    def pay(self, order):
-        if not authorizer.isAuthorized:
-            raise Exception(f"Not verified")
-        print("Paying via Debit Card")
-        print(f"Authenticating {self.secretKey}")
-        order.status = "Paid"
+Instead of the cashier knowing how to process different payment methods (credit, debit, cash, UPI), the cashier just hands the payment to a payment device.
+The payment device (abstraction) handles the payment processing based on the payment method.
+The cashier doesn’t care how the payment is processed, they just know that they hand it off to a device that processes it.
+If the restaurant later adds a new payment method (e.g., digital wallets), the cashier's behavior doesn't change—they still hand it off to the same payment device (abstraction), which now knows how to handle the new method.
 
-
-order1=Order()
-
-order1.addItem('MacBook Pro M1 2022', 1, 1000)
-order1.addItem('iPhone 13', 2, 1500)
-order1.addItem('iPad Pro 2022', 1, 700)
-order1.addItem('MacBook Air M2 2022', 1, 1200)
-
-
-order1.totalPrice()
-
-authorizer=SMSAuth
-dbc=DebitCardPayment(437, authorizer)
-authorizer.verifyCode(437)
-dbc.pay(order1)
-```
-
-The output for Principle 4 and 5 remain the same
-So, now if we add another Authorizer we can extend the Authorizer class and not create a new Authorization class.
-
+This decoupling keeps the process flexible and extendable.
 
 ## Conclusion
 That's all for S.O.L.I.D Principles, these principles are very essential in order to write clean, comprehensive code and as we keep writing code we don't have to remember these principles rather we can just integrate them on the go.
