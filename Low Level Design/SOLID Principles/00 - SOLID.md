@@ -4,47 +4,34 @@
 Have a look at this example,
 
 ```
-class Order:
-    items = []
-    quantities = []
-    prices = []
-    payments = ['Debit Card', 'Credit Card', 'UPI', 'PayPal']
-    status = "open"
-    
-    def addItem(self, item, quantity, price):
+class OnlineStore:
+    def __init__(self):
+        self.items = []
+
+    def add_item(self, item):
         self.items.append(item)
-        self.quantities.append(quantity)
-        self.prices.append(price)
-    
-    def totalPrice(self):
-        total=0
-        for currentItem in range(len(self.items)):
-            total+= self.quantities[currentItem]*self.prices[currentItem]
+
+    def checkout(self, payment_method, customer):
+        # Process payment
+        if payment_method == "credit_card":
+            print(f"Processing credit card payment for {customer}")
+        elif payment_method == "cash":
+            print(f"Processing cash payment for {customer}")
         
-        print(f"Your Total Bill is ${total}")
-    
-    def payOrder(self, paymentMethod, securityCode):
-        time.sleep(10)
-        print(f"{datetime.datetime.now().day} / {datetime.datetime.now().month} / {datetime.datetime.now().year} - {datetime.datetime.now().hour} : {datetime.datetime.now().minute} : {datetime.datetime.now().second}: Paying for your order via : {paymentMethod}")
-        time.sleep(10)
-        print(f"{datetime.datetime.now().day} / {datetime.datetime.now().month} / {datetime.datetime.now().year} - {datetime.datetime.now().hour} : {datetime.datetime.now().minute} : {datetime.datetime.now().second}: Verifiying your Security Code: {securityCode}")
-        self.status = "Paid"
-        if self.status == "Paid":
-            print(f"{datetime.datetime.now().day} / {datetime.datetime.now().month} / {datetime.datetime.now().year} - {datetime.datetime.now().hour} : {datetime.datetime.now().minute} : {datetime.datetime.now().second}: SUCCESS!")
-        if paymentMethod not in self.payments:
-            raise Exception(f"Unsupported Payment Method - {paymentMethod}")
+        # Send notification
+        if "@" in customer:
+            print(f"Sending email notification to {customer}")
+        else:
+            print(f"Sending SMS notification to {customer}")
 
-order1=Order()
+        # Update inventory
+        for item in self.items:
+            print(f"Updating inventory for {item}")
 
-order1.addItem('MacBook Pro M1 2022', 1, 1000)
-order1.addItem('iPhone 13', 2, 1500)
-order1.addItem('iPad Pro 2022', 1, 700)
-order1.addItem('MacBook Air M2 2022', 1, 1200)
-
-order1.totalPrice()
-
-order1.payOrder('Debit Card', 437)
-
+# Usage:
+store = OnlineStore()
+store.add_item("Laptop")
+store.checkout("credit_card", "customer@example.com")
 ```
 
 ### Output                                                             
