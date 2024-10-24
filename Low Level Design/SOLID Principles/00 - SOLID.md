@@ -34,91 +34,84 @@ store.add_item("Laptop")
 store.checkout("credit_card", "customer@example.com")
 ```
 
-### Output                                                             
-Your Total Bill is $5900                                            
+### Output
+```
+Processing credit card payment for customer@example.com
+Sending email notification to customer@example.com
+Updating inventory for Laptop                               
+```
 
-1 / 8 / 2022 - 18 : 30 : 50: Paying for your order via : Debit Card 
-
-1 / 8 / 2022 - 18 : 31 : 0: Verifiying your Security Code: 437      
-
-1 / 8 / 2022 - 18 : 31 : 0: SUCCESS!                                
-
-
-this piece of code replicates the functionality of an Online Shopping system like Amazon where there is a class named ```Order``` has 3 methods ```addItem```, ```totalPrice```, ```payOrder``` for adding items to the cart, calculating the total price and paying for the order respectively. but this violates certain coding principles we will discuss below
+This design violates several key principles that make it hard to maintain, scale, and adapt over time. The SOLID principles are a set of five guidelines to help you design software that is flexible, maintainable, and scalable. Each letter stands for a different principle, and together they help you create clean and robust code. Here’s an easy explanation of each principle and we'll be fixing the code for each violation that occurs.
 
 ## 1) Single Responsibility Principle
-Single Responsibility Principle states that every function/class should be performing a single action only, meaning that classes and functions should be highly coherent
+**Definition**: A class should have only one reason to change, meaning it should only have one job or responsibility.
 
-Violation in the above code:
-- The Class Order performs actions such as i) adding item to cart ii) calculating order price and iii) paying for the order, here the payment functionality should not be in the Order class rather a different class should be created for handling Payments.
+**In simple terms:** Each class should do one thing and do it well.
+
+**Violation in the above code**:
+- **Problem**: The OnlineStore class is doing too many things:
+  - It handles item management (add_item).
+  - It processes payments in the checkout method.
+  - It sends notifications (decides whether to send an email or SMS).
+  - It updates the inventory.
+  - 
+- **Why it's bad**:
+A class should only have one reason to change. If you want to change the way payments are handled, or how notifications are sent, or how inventory is updated, you'll end up modifying this class, which can introduce bugs in unrelated functionality.
+This makes the class harder to understand and maintain because multiple responsibilities are bundled into one.
 
 here's how you can fix it
 
-1) Create a separate class named Payment to handle payment processes
+We’ll refactor the OnlineStore class so that it only manages the cart and checkout process. We'll delegate payment processing, notification sending, and inventory management to separate classes.
 
 ```
-class Order:
-    items = []
-    quantities = []
-    prices = []
-    
-    status = "open"
-    
-    def addItem(self, item, quantity, price):
+class InventoryManager:
+    def update_inventory(self, items):
+        for item in items:
+            print(f"Updating inventory for {item}")
+
+class PaymentProcessor:
+    def process_payment(self, payment_method, customer):
+        if payment_method == "credit_card":
+            print(f"Processing credit card payment for {customer}")
+        elif payment_method == "cash":
+            print(f"Processing cash payment for {customer}")
+
+class NotificationService:
+    def send_notification(self, customer, message):
+        if "@" in customer:
+            print(f"Sending email to {customer}: {message}")
+        else:
+            print(f"Sending SMS to {customer}: {message}")
+
+class OnlineStore:
+    def __init__(self):
+        self.items = []
+
+    def add_item(self, item):
         self.items.append(item)
-        self.quantities.append(quantity)
-        self.prices.append(price)
-    
-    def totalPrice(self):
-        total=0
-        for currentItem in range(len(self.items)):
-            total+= self.quantities[currentItem]*self.prices[currentItem]
-        
-        print(f"Your Total Bill is ${total}")
 
+    def checkout(self, payment_method, customer):
+        payment_processor = PaymentProcessor()
+        payment_processor.process_payment(payment_method, customer)
+
+        inventory_manager = InventoryManager()
+        inventory_manager.update_inventory(self.items)
+
+        notification_service = NotificationService()
+        notification_service.send_notification(customer, "Thank you for your purchase!")
 ```
 
+Output
 ```
-class Payment:
-    payments = ['Debit Card', 'Credit Card', 'UPI', 'PayPal']
-    
-    def payOrder(self, paymentMethod, securityCode):
-        time.sleep(10)
-        print(f"{datetime.datetime.now().day} / {datetime.datetime.now().month} / {datetime.datetime.now().year} - {datetime.datetime.now().hour} : {datetime.datetime.now().minute} : {datetime.datetime.now().second}: Paying for your order via : {paymentMethod}")
-        time.sleep(10)
-        print(f"{datetime.datetime.now().day} / {datetime.datetime.now().month} / {datetime.datetime.now().year} - {datetime.datetime.now().hour} : {datetime.datetime.now().minute} : {datetime.datetime.now().second}: Verifiying your Security Code: {securityCode}")
-        self.status = "Paid"
-        if self.status == "Paid":
-            print(f"{datetime.datetime.now().day} / {datetime.datetime.now().month} / {datetime.datetime.now().year} - {datetime.datetime.now().hour} : {datetime.datetime.now().minute} : {datetime.datetime.now().second}: SUCCESS!")
-        if paymentMethod not in self.payments:
-            raise Exception(f"Unsupported Payment Method - {paymentMethod}")
+Updating inventory for Laptop
+Sending email to customer@example.com: Thank you for your purchase!
 ```
 
-```
-order1=Order()
+Now, each class has a single responsibility.
 
-order1.addItem('MacBook Pro M1 2022', 1, 1000)
-order1.addItem('iPhone 13', 2, 1500)
-order1.addItem('iPad Pro 2022', 1, 700)
-order1.addItem('MacBook Air M2 2022', 1, 1200)
+**Real-World Example:**
+Imagine separating tasks in a store: the **cashier** handles payments, the **inventory manager** handles stock updates, and the communications team sends out notifications. No one is doing multiple jobs at once.
 
-order1.totalPrice()
-
-Payment().payOrder('Debit Card', 437)
-
-```
-
-### Output                                                             
-Your Total Bill is $5900                                            
-
-1 / 8 / 2022 - 18 : 30 : 50: Paying for your order via : Debit Card 
-
-1 / 8 / 2022 - 18 : 31 : 0: Verifiying your Security Code: 437      
-
-1 / 8 / 2022 - 18 : 31 : 0: SUCCESS!  
-
-So, in this manner if we have to include more payment methods we can just edit the ```Payment``` class and add more functionalities.
-```Order``` now has only one functionality whereas ```Payment``` has another functionality this increased the cohesion but also introduced some coupling.
 
 ## 2) Open Close Principle
 Open & Close display polarity in their literal meanings and so is this concept emulating something similar to their literal meanings. 
