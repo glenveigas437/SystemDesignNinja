@@ -352,7 +352,7 @@ This is an OTT Platform app
 
 ## 5 - Builder Pattern
 
-he Builder Pattern is a creational pattern whose intent is to separate the construction of a complex object from its representation so that you can use the same construction process to create different representations.
+The Builder Pattern is a creational design pattern used to construct complex objects step-by-step. Unlike constructors with many parameters, the Builder Pattern separates the construction of an object from its representation, allowing for more readable code, especially when creating objects with many fields or complex initialization.
 
 The Builder Pattern tries to solve,
 
