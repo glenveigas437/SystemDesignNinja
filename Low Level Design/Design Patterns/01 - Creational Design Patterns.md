@@ -4,74 +4,109 @@ Creational Design Patterns are responsible for efficient object creation mechani
 
 ## 1 - Factory Pattern
 
-- Factory Pattern is also called virtual constructor, to describe in simple terms Factory Patterns allow an interface or a class to create an object, but let the subclasses decide which class or object to instantiate. 
-- Here, objects are created without exposing the logic to the client, and for creating the new type of object, the client uses the same common interface.
+**Definition****:**
+The Factory Pattern offers a method to create objects without requiring the direct instantiation of their specific classes. Rather than calling a class constructor directly, the responsibility for object creation is given to a factory method that decides which class to instantiate based on given criteria.
 
-Example:
-Amazon Shopping App.
+**Purpose****:**
+This pattern supports loose coupling by allowing code to depend on an interface or an abstract class instead of particular concrete classes. It provides flexibility and extensibility in creating new objects without needing to alter existing code, making the system easier to scale and modify.
 
-Amazon has 2 types of membership with the premium member subscription (Amazon Prime) providing a lot of benefits like 1-Day/Same Day Delivery, discounts, access to amazing video content and also on-demand music streaming, while the regular members do not receive these perks.
+**Real-world Analogy:**
+Think of ordering a coffee at a café. You don’t specify if a barista or a machine should make it—you just ask for the coffee. The café (acting as the factory) determines the best way to fulfill your request based on current conditions, like staff availability.
 
-So consider that before Amazon could come up with the concept of Prime, they just built one class for the Regular members but now with the inception of Amazon Prime it comes with its own benefits.
+**Example:**
+In the context of a food delivery app, the Factory Pattern can be used to create instances of different types of FoodItem classes based on user orders. This pattern helps manage the creation of various food item objects, such as Pizza, Burger, or Pasta, without requiring the client code to know the specific classes that are being instantiated.
+
+The Factory Pattern consists of several key components that work together to create objects in a flexible and decoupled way. Here are the primary components:
+
+**Product Interface (or Abstract Product):**
+This defines the common interface or abstract class that all concrete products should implement. It provides a template for the behavior and properties expected in each product. In the food delivery example above, this would be the FoodItem abstract class, which includes the methods prepare() and package().
+
+**Concrete Products:**
+These are the specific implementations of the Product Interface. Each concrete product class provides its unique implementation of the methods defined by the Product Interface. In the example, Pizza, Burger, and Pasta are the concrete products that implement the FoodItem interface.
+
+**Factory:**
+This is the class responsible for creating instances of the concrete products based on the given parameters. The Factory encapsulates the object creation logic, allowing the client to request objects without needing to know which concrete class is being instantiated. In the example, the FoodFactory class is the factory that creates and returns instances of Pizza, Burger, or Pasta based on the input.
+
+**Client Code:**
+The client code interacts with the factory to obtain instances of the Product Interface. The client does not need to know about the concrete classes or how the objects are created; it only interacts with the factory and the Product Interface. In the example, the order_food function represents the client code that uses the factory to get instances of FoodItem.
 
 ```
 from abc import ABC, abstractmethod
-from datetime import datetime
 
-class Membership(ABC):
+# Step 1: Define the Abstract Product
+class FoodItem(ABC):
     @abstractmethod
-    def deliveryDates(self, orderDate):
+    def prepare(self):
         pass
 
-class Regular(Membership):
-    def __init__(self, age):
-        self.age = age
-        
-    def deliveryDates(self, orderDate):
-        return f'Delivery Date is: {orderDate.day + (10%30)} - {orderDate.month} - {orderDate.year}'
+    @abstractmethod
+    def package(self):
+        pass
 
-class Prime(Membership):
-    def __init__(self,age):
-        self.age = age
-        
-    
-    def getCost(self):
-        if self.age<=24:
-            return f'Subscription Price is: 499'
+
+# Step 2: Create Concrete Products
+class Pizza(FoodItem):
+    def prepare(self):
+        return "Preparing a delicious Pizza."
+
+    def package(self):
+        return "Packaging the Pizza in a pizza box."
+
+
+class Burger(FoodItem):
+    def prepare(self):
+        return "Grilling the Burger patty."
+
+    def package(self):
+        return "Packaging the Burger in a wrapper."
+
+
+class Pasta(FoodItem):
+    def prepare(self):
+        return "Boiling pasta and preparing sauce."
+
+    def package(self):
+        return "Packaging the Pasta in a container."
+
+
+# Step 3: Create the Factory
+class FoodFactory:
+    @staticmethod
+    def create_food_item(food_type):
+        if food_type == "Pizza":
+            return Pizza()
+        elif food_type == "Burger":
+            return Burger()
+        elif food_type == "Pasta":
+            return Pasta()
         else:
-            return f'Subscription Price is: 999'
-    
-    def deliveryDates(self, orderDate):
-        return f'Delivery Date is: {orderDate.day} - {orderDate.month} - {orderDate.year}'
+            raise ValueError(f"Unknown food type: {food_type}")
 
-class Member:
-    def __init__(self, name, age, city, isPrime):
-        self.name = name
-        self.age = age
-        self.city = city
-        self.isPrime = isPrime
 
-member1 = Member('Ronaldo', 37, 'Lisbon', True)
-member2 = Member('Messi', 34, 'Rosario', False)
+# Client Code
+def order_food(food_type):
+    food_item = FoodFactory.create_food_item(food_type)
+    print(food_item.prepare())
+    print(food_item.package())
 
-def checkDeliveryDate(member):
-    if member.isPrime:
-        primeMember=Prime(member.age)
-        return primeMember.deliveryDates(datetime(2022, 8, 12)), primeMember.getCost()
-    else:
-        return Regular(member.age).deliveryDates(datetime(2022, 8, 12))
-        
 
-checkDeliveryDate(member1)
-checkDeliveryDate(member2)
+# Testing the Factory Pattern in a food delivery context
+order_food("Pizza")
+order_food("Burger")
+order_food("Pasta")
 
 ```
 
 Output
 ```
-('Delivery Date is: 12 - 8 - 2022', 'Subscription Price is: 999')
+Preparing a delicious Pizza.
+Packaging the Pizza in a pizza box.
 
-'Delivery Date is: 22 - 8 - 2022'
+Grilling the Burger patty.
+Packaging the Burger in a wrapper.
+
+Boiling pasta and preparing sauce.
+Packaging the Pasta in a container.
 ```
 
 So, as we can see in the above example, we have created 2 subclasses of the the interface/Abstract class Membership along with the Regular and Prime Membership subclasses that have an abstract method of displaying the delivery dates of the orders placed, now based on their membership status the subclasses were called.
@@ -79,516 +114,388 @@ So, as we can see in the above example, we have created 2 subclasses of the the 
 
 ## 2 - Abstract Factory Pattern
 
-Abstract Factory Pattern is combination or a set of multiple factory patterns, Now a factory pattern is created in the client side, but what if we want to create additional objects of new interfaces then we need to make changes in the client, what if there is a pattern where we don't have to mess with the client side, so we can add another layer of abstraction that can handle these changes.
+**Definition**
+The Abstract Factory Pattern is a creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. It allows clients to create multiple objects that belong to a specific "family" of objects and ensures that only compatible products are created together.
 
-in the example above we made use of an if-else condition to check for delivery dates of a prime and regular Amazon account user.
-Now, let's look at the example below
+**Components**
+- **Abstract Factory Interface:** Declares methods for creating each type of product in the family.
+- **Concrete Factories:** Implement the abstract factory interface to create specific types of related products.
+- **Abstract Product Interfaces:** Define the interfaces for each type of product that the factory produces. Each family of products has a separate interface.
+- **Concrete Products:** These are the actual implementations of the product interfaces, created by concrete factories. They belong to a specific product family.
+- **Client Code:** Uses the abstract factory interface to interact with the factory and create products, without needing to know the specific concrete classes.
 
+**Purpose**
+The Abstract Factory Pattern is useful for creating families of related objects, such as a group of UI components or different types of food items, that must work together in a system. It promotes consistency by ensuring that only compatible objects are created together, making it easier to swap entire families of objects while keeping the system consistent and decoupled from concrete implementations.
+
+**Real World Analogy**
+Imagine a restaurant that serves different cuisines, like Italian and Mexican. Each cuisine has a specific set of dishes—an Italian set with pizza and pasta, and a Mexican set with tacos and burritos. The restaurant manager (Abstract Factory) can request either the Italian or Mexican kitchen (Concrete Factories) to prepare an entire set of dishes. Each kitchen (Concrete Factory) knows how to create its own related dishes (Concrete Products) that fit well together.
+
+**Example** 
+In a food delivery app, the Abstract Factory Pattern could be used to manage different types of meal categories. For example, you might have VeganMealFactory and NonVeganMealFactory for different dietary preferences. Each factory would produce products like MainCourse, SideDish, and Dessert specific to the dietary preference.
+
+Here's how this would look in code:
 
 ```
 from abc import ABC, abstractmethod
 
-class Product(ABC):
+# Abstract Products
+class MainCourse(ABC):
     @abstractmethod
-    def description(self):
-        pass
-        
-class Shirt(Product):
-    def description(self, brand, price):
-        return f"This is a dress shirt by {brand} worth Rs. {price}"
-
-class Trousers(Product):
-    def description(self, brand, price):
-        return f"This is a trouser by {brand} worth Rs. {price}"
- 
-class Kurti(Product):
-    def description(self, brand, price):
-        return f"This is a Floral Top by {brand} worth Rs. {price}"
-
-class Leggings(Product):
-    def description(self, brand, price):
-        return f"This is a Legging by {brand} worth Rs. {price}"
-
-class Factory(ABC):
-    @abstractmethod
-    def getOutfit(self):
+    def prepare(self):
         pass
 
-class MensClothingFactory(Factory):
-    def getOutfit(self, bill):
-        if bill.typeOfOutfit=='Top':
-            return Shirt().description(bill.brand, bill.price)
-        if bill.typeOfOutfit=='Pant':
-            return Trousers().description(bill.brand, bill.price)
+class SideDish(ABC):
+    @abstractmethod
+    def prepare(self):
+        pass
 
-class WomensClothingFactory(Factory):
-    def getOutfit(self, bill):
-        if bill.typeOfOutfit=='Top':
-            return Kurti().description(bill.brand, bill.price)
-        if bill.typeOfOutfit=='Pant':
-            return Leggings().description(bill.brand, bill.price)
-            
-class Customer:
-    def __init__(self, name, gender):
-        self.name = name
-        self.gender = gender
+# Concrete Products for Vegan
+class VeganMainCourse(MainCourse):
+    def prepare(self):
+        return "Preparing vegan tofu stir-fry."
 
-class Bill:
-    def __init__(self, brand, price, typeOfOutfit, customer):
-        self.brand = brand
-        self.price = price
-        self.typeOfOutfit = typeOfOutfit
-        self.customer = customer
- 
-c1 = Customer('Chris', 'Male')
-c2 = Customer('Elsa', 'Female')
+class VeganSideDish(SideDish):
+    def prepare(self):
+        return "Preparing vegan salad."
 
-b1 = Bill('Van Heusen', 1000, 'Top', c1)
-b2 = Bill('Gucci', 900, 'Top', c2)
-b3 = Bill('Allen Solly', 800, 'Pant', c1)
-b4 = Bill('Armani', 500, 'Pant', c2)
+# Concrete Products for Non-Vegan
+class NonVeganMainCourse(MainCourse):
+    def prepare(self):
+        return "Preparing grilled chicken."
 
-def getBills(bill):
-    if bill.customer.gender=='Male':
-        return MensClothingFactory().getOutfit(bill)
-    else:
-        return WomensClothingFactory().getOutfit(bill)
+class NonVeganSideDish(SideDish):
+    def prepare(self):
+        return "Preparing fries."
 
-print(f"{getBills(b1)} \n {getBills(b3)}")
-print(f"{getBills(b2)} \n {getBills(b4)}")
+# Abstract Factory
+class MealFactory(ABC):
+    @abstractmethod
+    def create_main_course(self):
+        pass
+
+    @abstractmethod
+    def create_side_dish(self):
+        pass
+
+# Concrete Factories
+class VeganMealFactory(MealFactory):
+    def create_main_course(self):
+        return VeganMainCourse()
+
+    def create_side_dish(self):
+        return VeganSideDish()
+
+class NonVeganMealFactory(MealFactory):
+    def create_main_course(self):
+        return NonVeganMainCourse()
+
+    def create_side_dish(self):
+        return NonVeganSideDish()
+
+# Client Code
+def order_meal(factory: MealFactory):
+    main_course = factory.create_main_course()
+    side_dish = factory.create_side_dish()
+    print(main_course.prepare())
+    print(side_dish.prepare())
+
+# Ordering different types of meals
+print("Vegan Meal:")
+order_meal(VeganMealFactory())
+
+print("\nNon-Vegan Meal:")
+order_meal(NonVeganMealFactory())
 ```
 
 #### OUTPUT
 
 ```
-This is a dress shirt by Van Heusen worth Rs. 1000 
-This is a trouser by Allen Solly worth Rs. 800
-This is a Floral Top by Gucci worth Rs. 900 
-This is a Legging by Armani worth Rs. 500
+Vegan Meal:
+Preparing vegan tofu stir-fry.
+Preparing vegan salad.
+
+Non-Vegan Meal:
+Preparing grilled chicken.
+Preparing fries.
 ```
 
-In the example above, There is one interface for different types of clothes which is wrapped into one factory based on the dressing style, for e.g. if the customer is a man then it returns the factory of shirts and trousers, while dress and leggings are returned based on a woman's shopping preferences.
-
-So we can infer that if there are multiple items under one category we can wrap those items in Factory.
 
 ## 3 - Singleton Pattern
 
-A Singleton is an object with two main characteristics:
+**Definition**
+The Singleton Pattern is a creational design pattern that ensures a class has only one instance, while providing a global point of access to that instance. This pattern restricts the instantiation of a class to a single object, making it ideal for resources that should be shared throughout an application.
 
-- It can have at most one instance
-- It should have global accessibiility in the program
-These properties are both important, although in practice you'll often hear people calling something a Singleton even if it has only one of these properties.
+**Components**
+- **Singleton Class:** The class that implements the Singleton Pattern by controlling its instantiation and ensuring that only one instance exists.
+- **Private Constructor:** The constructor is often made private (or controlled) to prevent direct instantiation outside the class.
+- **Static Instance Variable:** Holds the single instance of the class.
+- **Public Access Method:** A method (often get_instance) that provides access to the instance, creating it if it doesn’t already exist.
 
-Having only one instance is usually a mechanism for controlling access to some shared resource. For example, two threads may work with the same file, so instead of both opening it separately, a Singleton can provide a unique access point to both of them.
+**Purpose**
+The purpose of the Singleton Pattern is to control access to a resource that should have only one instance within a system. Examples include database connections, configuration settings, and logging services. By ensuring only one instance exists, the pattern promotes resource sharing and reduces unnecessary overhead.
 
-Global accessibility is important because after your class has been instantiated once, you'd need to pass that single instance around in order to work with it. It can't be instantiated again. That's why it's easier to make sure that whenever you try to instantiate the class again, you just get the same instance you've already had.
+**Real World Analogy**
+Consider a food delivery app where all orders go through a single OrderManager service that coordinates the assignment of orders to delivery personnel. Regardless of how many users are using the app, there is only one OrderManager to ensure that orders are processed and assigned in a consistent, centralized way.
 
-Have a look at the example below,
-Gaming companies these days restrict the installation of the software to multiple PCs, so let's try and implement something similar in this case.
+**Example**
+In a food delivery app, a DatabaseConnection could be implemented as a Singleton to ensure that all parts of the app use the same database connection instance, preventing issues with multiple connections and improving resource management.
 
-There is a class named ```Game```, with it's instance set to None.
-We create an obeject named ```user1``` as the sole user of the game, if another user is created then this Game won't be installed.
-
+Here’s how it could look in code:
 ```
-class Game:
-   __instance__ = None
+class DatabaseConnection:
+    _instance = None  # Static instance variable
 
-   def __init__(self):
-       """ Constructor.
-       """
-       if Game.__instance__ is None:
-           Game.__instance__ = self
-       else:
-           raise Exception("You cannot create another user to the play this game")
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(DatabaseConnection, cls).__new__(cls)
+            cls._instance.connection = cls._create_connection()
+        return cls._instance
 
-   @staticmethod
-   def get_instance():
-       """ Static method to fetch the current instance.
-       """
-       if not Game.__instance__:
-           Game()
-       return Game.__instance__
+    @staticmethod
+    def _create_connection():
+        # Simulate creating a database connection
+        return "Database connection established"
 
-```
+    def query(self, sql):
+        return f"Executing '{sql}' on the single database instance."
 
-```
-user1 = Game()
-user1.getInstance()
+# Client Code
+def main():
+    # Getting the single instance
+    db1 = DatabaseConnection()
+    print(db1.query("SELECT * FROM Orders"))
 
-#Creating another object leading to an Exception
-user2 = Game()
+    # Trying to get another instance
+    db2 = DatabaseConnection()
+    print(db2.query("SELECT * FROM Customers"))
+
+    # Verifying that db1 and db2 are the same instance
+    print("Same instance:", db1 is db2)
+
+main()
 ```
 
 ### OUTPUT
 
 ```
-#Object for user1
-<__main__.Game at 0x10628cf10>
-
-#for object user2
-Exception: You cannot create another user to the play this game
+Executing 'SELECT * FROM Orders' on the single database instance.
+Executing 'SELECT * FROM Customers' on the single database instance.
+Same instance: True
 
 ```
 
 ## 4 - Prototype Pattern
 
-Prototype Pattern is good for when creating new objects that require a lot of resources than required. In prototype pattern you just create a copy of the object and store it in memory.
+**Definition**
+The Prototype Pattern is a creational design pattern that enables the creation of new objects by copying or cloning an existing object, called the prototype. This approach allows for efficient creation of objects when direct instantiation is costly or complicated.
 
-In Prototype Pattern, there is an interface that has a clone method and then multiple concrete classes have their independent clone methods.
+**Components**
+- **Prototype Interface:** Defines a method for cloning objects. This is often a clone or copy method.
+- **Concrete Prototype:** Implements the prototype interface and defines how to create a copy of itself.
+- **Client Code:** Uses the prototype to create new objects by cloning existing ones instead of instantiating new objects directly.
 
-Here is an example of prototype pattern.
-In Amazon App there are many small applications, now instead of creating a new object of the concrete App classes, we make a copy of these applications and then access their content.
+**Purpose**
+The Prototype Pattern is particularly useful when creating an object is resource-intensive or when there are numerous configurations of an object. Cloning provides a quick way to replicate objects with similar properties while allowing further modifications as needed, without creating each one from scratch.
+
+**Real World Analogy**
+Consider a food delivery app that allows users to save custom orders as "templates." When a user wants to reorder, they can simply clone their saved template, customize it (e.g., add extra toppings), and place the order. The saved template acts as a prototype for the new customized order.
+
+**Example**
+In a food delivery app, suppose we have a class representing a FoodOrder that has details about the items in an order, customer preferences, and delivery instructions. Using the Prototype Pattern, the app can create new orders by cloning an existing FoodOrder object, which can then be modified before submission.
+
+Here's a code example:
 
 ```
-from abc import ABC, abstractmethod
 import copy
 
-class AmazonApp(ABC):
-    def __init__(self):
-        self.id = None
-        self.type = None
-    
-    @abstractmethod
-    def application(self):
-        pass
-    
-    def getID(self):
-        return self.id
-    
-    def getType(self):
-        return self.type
-    
-    def setID(self, newId):
-        self.id=newId
-    
+# Prototype Interface
+class FoodOrderPrototype:
     def clone(self):
-        return copy.copy(self)
+        return copy.deepcopy(self)
 
-class AmazonFresh(AmazonApp):
-    def __init__(self):
-        super().__init__()
-        self.type='Grocery Shopping'
-    
-    def application(self):
-        return f"This is a {self.type} App"
- 
- class AmazonTV(AmazonApp):
-    def __init__(self):
-        super().__init__()
-        self.type='Video Channel'
-    
-    def application(self):
-        return f"This is a {self.type} app"
+# Concrete Prototype
+class FoodOrder(FoodOrderPrototype):
+    def __init__(self, items, customer_notes, delivery_address):
+        self.items = items  # List of items in the order
+        self.customer_notes = customer_notes
+        self.delivery_address = delivery_address
 
-class AmazonPrime(AmazonApp):
-    def __init__(self):
-        super().__init__()
-        self.type='OTT Platform'
-    
-    def application(self):
-        return f"This is a {self.type} app"
-        
-class AmazonAppCache():
-    
-    cache={}
-    
-    @staticmethod
-    def getApp(appId):
-        App=AmazonAppCache.cache.get(appId, None)
-        return App.clone()
-    
-    @staticmethod
-    def load():
-        fresh=AmazonFresh()
-        fresh.setID(1)
-        AmazonAppCache.cache[fresh.getID()]=fresh
-    
-        ATV=AmazonTV()
-        ATV.setID(2)
-        AmazonAppCache.cache[ATV.getID()]=ATV
-        
-        prime=AmazonPrime()
-        prime.setID(3)
-        AmazonAppCache.cache[prime.getID()]=prime
-        
-def startApp():
-    AmazonAppCache().load()
-    
-    for key, value in AmazonAppCache().cache.items():
-        print(key, ":", value)
-    
-    choice = int(input("Select App: "))
-    if choice==1:
-        fresh=AmazonAppCache.getApp(choice)
-        print("Selected FRESH")
-        print(fresh.application())
-    
-    elif choice==2:
-        ATV=AmazonAppCache.getApp(choice)
-        print("Selected TV")
-        print(ATV.application())
-    
-    else:
-        prime=AmazonAppCache.getApp(choice)
-        print("Selected PRIME")
-        print(prime.application())
- 
-startApp()
+    def __str__(self):
+        return (f"Items: {self.items}\n"
+                f"Notes: {self.customer_notes}\n"
+                f"Delivery Address: {self.delivery_address}\n")
+
+# Client Code
+def main():
+    # Original order template
+    original_order = FoodOrder(
+        items=["Pizza", "Salad"],
+        customer_notes="Extra cheese on pizza",
+        delivery_address="123 Food Street"
+    )
+    print("Original Order:")
+    print(original_order)
+
+    # Cloning the order for a new customer with slight changes
+    cloned_order = original_order.clone()
+    cloned_order.customer_notes = "No cheese on pizza"
+    cloned_order.delivery_address = "456 Main Avenue"
+
+    print("Cloned Order with Modifications:")
+    print(cloned_order)
+
+main()
 ```
 
 ### OUTPUT
 
 ```
-1 : <__main__.AmazonFresh object at 0x107827220>
-2 : <__main__.AmazonTV object at 0x107827190>
-3 : <__main__.AmazonPrime object at 0x1072b8040>
+Original Order:
+Items: ['Pizza', 'Salad']
+Notes: Extra cheese on pizza
+Delivery Address: 123 Food Street
 
-Select App: 3
-
-Selected PRIME
-This is an OTT Platform app
-
+Cloned Order with Modifications:
+Items: ['Pizza', 'Salad']
+Notes: No cheese on pizza
+Delivery Address: 456 Main Avenue
 ```
 
 ## 5 - Builder Pattern
 
-The Builder Pattern is a creational design pattern used to construct complex objects step-by-step. Unlike constructors with many parameters, the Builder Pattern separates the construction of an object from its representation, allowing for more readable code, especially when creating objects with many fields or complex initialization.
+**Definition**
+The Builder Pattern is a creational design pattern that allows the construction of complex objects step by step. This pattern separates the construction of an object from its representation, enabling the same construction process to create different representations or configurations of the object.
 
-The Builder Pattern tries to solve,
+**Components**
+- **Builder Interface:** Declares the steps required to build the product. These steps are often defined as separate methods for configuring different aspects of the product.
+- **Concrete Builder:** Implements the Builder interface, providing specific implementations for each building step. This class is responsible for assembling the product.
+- **Product:** The complex object that is being built. The builder gradually assembles it.
+- **Director:** (Optional) Orchestrates the building steps in a particular sequence, guiding the builder to construct a specific product configuration.
+- **Client Code:** Initiates the building process by interacting with the Director or directly with the Builder to create the product.
 
-How can a class that includes creating a complex object be simplified?
-How can a class create different representations of a complex object?
-The Builder and Factory patterns are very similar in the fact they both instantiate new objects at runtime. The difference is when the process of creating the object is more complex, so rather than the Factory returning a new instance of ObjectA, it calls the builders director constructor method ObjectA.construct() that goes through a more complex construction process involving several steps. Both return an Object/Product.
+**Purpose**
+The Builder Pattern is useful for constructing complex objects that require multiple configuration steps, especially when the object needs to be built in different ways. This pattern provides a clear, controlled, and flexible way to assemble parts of an object step-by-step, ensuring the final product is consistent and meets specific criteria.
 
-The Key terminologies in this pattern are
-1) Builder  - (interface, concrete builder)
-2) Director - (The place where the concrete builder is called)
-3) Client - (Invokes the director)
-4) Product - (The product being built)
+**Real World Analogy**
+In a food delivery app, think of building a customized meal. A MealBuilder allows users to choose different components, such as a main dish, side, and drink, to create a meal that suits their preferences. This pattern lets the app construct different types of meals (e.g., vegan, non-vegan) using the same interface and structure.
 
-<ins>Builder Interface</ins>: The skeleton of the entire Application
-<ins>Director</ins>: Inherits the Builder Interface
-<ins>Client</ins>: Calls the director and builds the product
+**Example**
+In a food delivery app, a user might want to customize a meal by selecting specific items, sides, and drinks. The Builder Pattern could help structure this process, allowing the creation of various meal configurations.
 
-Here is an example with Amazon Prime Video
-
+Here’s how it could look in code:
 ```
-from abc import ABC, abstractmethod
-
-#Interface
-class MovieBuilderInterface(ABC):
-    
-    @abstractmethod
-    def setMovieGenre(genre):
-        pass
-    
-    @abstractmethod
-    def setMovieDescription(desc):
-        pass
-    
-    @abstractmethod
-    def setMovieAgeLimit(ageLimit):
-        pass
-    
-    @abstractmethod
-    def setNumberOfActors(actors):
-        pass
-    
-    @abstractmethod
-    def getResult():
-        pass
- 
- #Product
- class Movie():
-    def __init__(self, genre='Genre', desc='Desc', ageLimit=0, actors=0):
-        self.genre = genre
-        self.desc = desc
-        self.ageLimit = ageLimit
-        self.actors = actors
-    
-    def constructor(self):
-        print(f"This is a movie of {self.genre} where {self.desc} and is only for audience above {self.ageLimit} years of age, also this movie has {self.actors} movie stars in it.")
-
-
-#Builder
-class MovieBuilder(MovieBuilderInterface):
+# Product
+class Meal:
     def __init__(self):
-        self.movie = Movie()
-    
-    def setMovieGenre(self, genre):
-        self.movie.genre = genre
-        return self
-    
-    def setMovieDescription(self, desc):
-        self.movie.desc = desc
-        return self
-        
-    def setMovieAgeLimit(self, ageLimit):
-        self.movie.ageLimit = ageLimit
-        return self
-    
-    def setNumberOfActors(self, actors):
-        self.movie.actors = actors
-        return self
-    
-    def getResult(self):
-        return self.movie
-        
-#Director
-class Avengers:
-    @staticmethod
-    def construct():
-        return MovieBuilder()\
-                .setMovieGenre('Adventure')\
-                .setMovieDescription('This is a superhero action Movie')\
-                .setMovieAgeLimit(12)\
-                .setNumberOfActors(8)\
-                .getResult()
+        self.main_course = None
+        self.side = None
+        self.drink = None
 
-#Object
-avengers=Avengers.construct()
-avengers.constructor()
+    def __str__(self):
+        return (f"Main Course: {self.main_course}\n"
+                f"Side: {self.side}\n"
+                f"Drink: {self.drink}\n")
 
+
+# Builder Interface
+class MealBuilder:
+    def add_main_course(self, main_course):
+        raise NotImplementedError
+
+    def add_side(self, side):
+        raise NotImplementedError
+
+    def add_drink(self, drink):
+        raise NotImplementedError
+
+    def get_meal(self):
+        raise NotImplementedError
+
+
+# Concrete Builder
+class VeganMealBuilder(MealBuilder):
+    def __init__(self):
+        self.meal = Meal()
+
+    def add_main_course(self, main_course="Vegan Burger"):
+        self.meal.main_course = main_course
+        return self
+
+    def add_side(self, side="Salad"):
+        self.meal.side = side
+        return self
+
+    def add_drink(self, drink="Smoothie"):
+        self.meal.drink = drink
+        return self
+
+    def get_meal(self):
+        return self.meal
+
+
+class NonVeganMealBuilder(MealBuilder):
+    def __init__(self):
+        self.meal = Meal()
+
+    def add_main_course(self, main_course="Chicken Burger"):
+        self.meal.main_course = main_course
+        return self
+
+    def add_side(self, side="Fries"):
+        self.meal.side = side
+        return self
+
+    def add_drink(self, drink="Soda"):
+        self.meal.drink = drink
+        return self
+
+    def get_meal(self):
+        return self.meal
+
+
+# Director (Optional)
+class MealDirector:
+    def __init__(self, builder):
+        self.builder = builder
+
+    def create_meal(self):
+        return (self.builder
+                .add_main_course()
+                .add_side()
+                .add_drink()
+                .get_meal())
+
+
+# Client Code
+def main():
+    # Vegan meal
+    vegan_builder = VeganMealBuilder()
+    director = MealDirector(vegan_builder)
+    vegan_meal = director.create_meal()
+    print("Vegan Meal:")
+    print(vegan_meal)
+
+    # Non-Vegan meal
+    non_vegan_builder = NonVeganMealBuilder()
+    director = MealDirector(non_vegan_builder)
+    non_vegan_meal = director.create_meal()
+    print("\nNon-Vegan Meal:")
+    print(non_vegan_meal)
+
+
+main()
 ```
 
 ### OUTPUT
 
 ```
-This is a movie of Adventure where This is a superhero action Movie and is only for audience above 12 years of age, also this movie has 8 movie stars in it.
+Vegan Meal:
+Main Course: Vegan Burger
+Side: Salad
+Drink: Smoothie
+
+Non-Vegan Meal:
+Main Course: Chicken Burger
+Side: Fries
+Drink: Soda
 ```
-
-In this example you can see that the end Product we are building is a Movie, to be specific the details of the movie
-With ```MovieBuilderInterface``` describing the skeleton of the Movie and ```MovieBuilder``` loading the details of the movie and the Product ```Movie``` being called in.
-
-
-## 6 - Strategy Pattern
-
-the strategy pattern (also known as the policy pattern) is a behavioral software design pattern that enables selecting an algorithm at runtime. Instead of implementing a single algorithm directly, code receives run-time instructions as to which in a family of algorithms to use.
-
-
-For example
-Consider a class Named Vehicle which has an abstract method named drive, now each type of vehicle - Bus, Truck, Car have their own implementation of drive methods, we observe that the the dirve nethod of Bus and Truck is the same, this problem doesn't promote the reusability of code.
-
-To solve this problem we further divide the drive method based on their characteristics and define them as derived classes.
-
-Below is an example of Amazon Shopping site displaying the discount of products.
-
-
-```
-from abc import ABC, abstractmethod
-
-
-
-#Statergy
-class DiscountStrategy(ABC):
-    
-    @abstractmethod
-    def givenDiscount(self):
-        pass
-
-#Different Types of discount strategies
-class FlatHalfDiscountStrategy(DiscountStrategy):
-    
-    def givenDiscount(self):
-        return f"The Discount value is 50% of the given price"
-
-
-class FlatQuarterDiscountStrategy(DiscountStrategy):
-    
-    def givenDiscount(self):
-        return f"The Discount value is 25% of the given price"
-        
-
-class BigDiscountStrategy(DiscountStrategy):
-    
-    def givenDiscount(self):
-        return f"The Discount value is 75% of the given price"
-
-
-
-
-class Discount(ABC):
-    
-    def __init__(self, obj):
-        self.obj = obj
-    
-    def discountConstruct(self):
-        return self.obj.givenDiscount()
-
-
-
-
-class FlatHalfDiscount(Discount):
-    def __init__(self):
-        super().__init__(FlatHalfDiscountStrategy())
-
-
-
-
-class FlatQuarterDiscount(Discount):
-    def __init__(self):
-        super().__init__(FlatQuarterDiscountStrategy())
-
-
-
-class FlatBigDiscount(Discount):
-    def __init__(self):
-        super().__init__(BigDiscountStrategy())
-
-
-
-class Product(ABC):
-    def __init__(self, productName, productDiscount):
-        self.productName = productName
-        self.productDiscount = productDiscount
-
-
-class Phone(Product):
-    def __init__(self):
-        super().__init__('iPhone 13', FlatQuarterDiscount())
-
-
-class Laptop(Product):
-    def __init__(self):
-        super().__init__('MacBook Pro', FlatHalfDiscount())
-
-
-class Tablet(Product):
-    def __init__(self):
-        super().__init__('iPad Air',FlatBigDiscount())
-
-
-
-class Main:
-    def __init__(self, product):
-        self.product = product()
-    
-    def getDiscountPrice(self):
-        return f"{self.product.productName} - {self.product.productDiscount.discountConstruct()}"
-
-
-
-
-
-phone=Main(Phone)
-laptop=Main(Laptop)
-tablet=Main(Tablet)
-
-
-
-print(phone.getDiscountPrice())
-print(laptop.getDiscountPrice())
-print(tablet.getDiscountPrice())
-```
-
-### OUTPUT
-
-```
-iPhone 13 - The Discount value is 25% of the given price
-MacBook Pro - The Discount value is 50% of the given price
-iPad Air - The Discount value is 75% of the given price
-```
-
-## 7 - Observer Pattern
-
-To understand observer pattern well, I have included this section in the case Study - [Design Notify Me Button in Amazon](https://github.com/glenveigas437/SystemDesignNinja/tree/main/Low%20Level%20Design/Case%20Studies/07%20-%20Design%20Notify%20Me%20Button%20in%20Amazon/Code)
