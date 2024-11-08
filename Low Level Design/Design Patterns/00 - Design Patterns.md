@@ -14,10 +14,9 @@ They're very useful for lowering the level of dependency between our classes and
 Types of Creational Design Patterns
  - [Factory Pattern](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#1---factory-pattern)
  - [Abstract Factory Pattern](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#2---abstract-factory-pattern)
- - Builder Pattern
- - Prototype Pattern
- - Singleton Pattern
-
+ - [Singleton Pattern](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#3---Singleton-pattern)
+ - [Prototype Pattern](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#4---prototype-pattern)
+ - [Builder Pattern](https://github.com/glenveigas437/SystemDesignNinja/blob/main/Low%20Level%20Design/Design%20Patterns/01%20-%20Creational%20Design%20Patterns.md#5---builder-pattern)
 
 ## 2) Structural Design Patterns
 Structural Design Patterns are used to assemble multiple classes into bigger working structures.
