@@ -4,10 +4,10 @@ Creational Design Patterns are responsible for efficient object creation mechani
 
 ## 1 - Factory Pattern
 
-**Definition****:**
+**Definition:**
 The Factory Pattern offers a method to create objects without requiring the direct instantiation of their specific classes. Rather than calling a class constructor directly, the responsibility for object creation is given to a factory method that decides which class to instantiate based on given criteria.
 
-**Purpose****:**
+**Purpose:**
 This pattern supports loose coupling by allowing code to depend on an interface or an abstract class instead of particular concrete classes. It provides flexibility and extensibility in creating new objects without needing to alter existing code, making the system easier to scale and modify.
 
 **Real-world Analogy:**
