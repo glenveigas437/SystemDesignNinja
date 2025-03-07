@@ -49,25 +49,25 @@ class MusicApp:
 
 ```
 
-❌ Violates SRP (Single Responsibility Principle)
+**❌ Violates SRP (Single Responsibility Principle)**
 
-The MusicApp class is doing too much (handling users, songs, reports, and emails).
+_The MusicApp class is doing too much (handling users, songs, reports, and emails)._
 
-❌ Violates OCP (Open/Closed Principle)
+**❌ Violates OCP (Open/Closed Principle)**
 
-If we need a new type of report or a new way to play songs, we have to modify the class.
+_If we need a new type of report or a new way to play songs, we have to modify the class._
 
-❌ Violates LSP (Liskov Substitution Principle)
+**❌ Violates LSP (Liskov Substitution Principle)**
 
-If we tried to create a PremiumMusicApp subclass with extra features, it would break the existing code.
+_If we tried to create a PremiumMusicApp subclass with extra features, it would break the existing code._
 
-❌ Violates ISP (Interface Segregation Principle)
+**❌ Violates ISP (Interface Segregation Principle)**
 
-The class has methods (send_email, generate_report) that may not be needed by all users of this class.
+_The class has methods (send_email, generate_report) that may not be needed by all users of this class._
 
-❌ Violates DIP (Dependency Inversion Principle)
+**❌ Violates DIP (Dependency Inversion Principle)**
 
-The class directly depends on implementation details instead of abstracting functionalities.
+_The class directly depends on implementation details instead of abstracting functionalities._
 
 
 
