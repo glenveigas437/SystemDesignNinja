@@ -708,39 +708,53 @@ We started with bad code that violated all SOLID principles and gradually improv
 Here’s a before vs. after comparison:
 
 **1️⃣ SRP (Single Responsibility Principle)**
+
 ❌ Before: MusicPlayer handled playing songs, managing users, and sending emails.
+
 ✅ After:
 ✔ Separated responsibilities into UserManager, SongManager, EmailService, and MusicPlayer.
 ✔ Each class now has only one reason to change.
 
 **2️⃣ OCP (Open/Closed Principle)**
+
 ❌ Before: Adding new music players (like Spotify) required modifying MusicPlayer.
+
 ✅ After:
 ✔ Introduced AudioPlayer (interface) to allow new players without modifying existing code.
 ✔ Now, we can add new players (like Apple Music) by just creating a new class that implements AudioPlayer.
 
 **3️⃣ LSP (Liskov Substitution Principle)**
+
 ❌ Before: SpotifyMusicPlayer threw an error if api_key was missing, breaking substitution.
+
 ✅ After:
 ✔ Ensured all subclasses fully support the AudioPlayer interface.
 ✔ Now, any AudioPlayer can be used without unexpected failures.
 
 **4️⃣ ISP (Interface Segregation Principle)**
+
 ❌ Before: MusicPlayer forced all music players to implement play_song, even if they played videos.
+
 ✅ After:
 ✔ Split into two smaller interfaces: AudioPlayer (for music) and VideoPlayer (for videos).
 ✔ Now, YouTubeMusicPlayer implements both instead of being forced into one.
 
 **5️⃣ DIP (Dependency Inversion Principle)**
+
 ❌ Before: EmailService was directly instantiated, making it tightly coupled to MusicPlayer.
+
 ✅ After:
 ✔ Created an abstract Notifier class, allowing easy switching between EmailNotifier and SMSNotifier.
 ✔ Used Dependency Injection to make ReportService flexible with TextReportGenerator and JSONReportGenerator.
 
 **🔥 Final Benefits of SOLID Applied Code**
+
 ✅ Scalable: We can add new features (new music players, reports, notifications) without modifying existing classes.
+
 ✅ Testable: We can easily mock dependencies (MockNotifier, MockReportGenerator) for unit testing.
+
 ✅ Flexible: We can swap implementations (e.g., change Notifier from Email to SMS) without code changes.
+
 ✅ Future-Proof: The code adapts to future needs without breaking existing functionality.
 
 That's all for S.O.L.I.D Principles, these principles are very essential in order to write clean, comprehensive code and as we keep writing code we don't have to remember these principles rather we can just integrate them on the go.
