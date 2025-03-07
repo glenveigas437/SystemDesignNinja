@@ -5,19 +5,19 @@
 SOLID is a set of five design principles that help developers write maintainable, scalable, and flexible code.
 
 **S** - Single Responsibility Principle (SRP)<br>
-&nbsp;&nbsp; _A class should have only one reason to change._
+&nbsp;&nbsp;&nbsp; _A class should have only one reason to change._
         
-**O** - Open/Closed Principle (OCP)
-        _A class should be open for extension but closed for modification._
+**O** - Open/Closed Principle (OCP)<br>
+&nbsp;&nbsp;&nbsp; _A class should be open for extension but closed for modification._
         
-**L** - Liskov Substitution Principle (LSP)
-        _A subclass should be able to replace its superclass without breaking the code._
+**L** - Liskov Substitution Principle (LSP)<br>
+&nbsp;&nbsp;&nbsp; _A subclass should be able to replace its superclass without breaking the code._
         
-**I** - Interface Segregation Principle (ISP)
-        _A class should not be forced to implement interfaces it doesn’t use._
+**I** - Interface Segregation Principle (ISP)<br>
+&nbsp;&nbsp;&nbsp; _A class should not be forced to implement interfaces it doesn’t use._
         
-**D** - Dependency Inversion Principle (DIP)
-        _High-level modules should not depend on low-level modules. Both should depend on abstractions._
+**D** - Dependency Inversion Principle (DIP)<br>
+&nbsp;&nbsp;&nbsp; _High-level modules should not depend on low-level modules. Both should depend on abstractions._
 
 ```
 class OnlineStore:
