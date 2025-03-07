@@ -277,13 +277,6 @@ email_service.send_email("alice@example.com", "Welcome to Music App!")
         
         ✅ Scalability improved – we can now easily add a CSVReportGenerator or AppleMusicPlayer without modifying existing classes
 
-In this manner we are open to adding new payment methods like Cash On Delivery, PayPal or Apple Pay, etc. but in the same manner we are not editing any of the pre-existing code.
-
-```
-class PayPalPayment(PaymentMethod):
-    def process(self, customer):
-        print(f"Processing PayPal payment for {customer}")
-```
 
 **Real-World Example:**
 In a store, imagine you have different payment terminals for credit cards, cash, and PayPal. The terminals don’t need to be modified when a new payment method is introduced; you just add a new terminal.
@@ -294,30 +287,119 @@ In a store, imagine you have different payment terminals for credit cards, cash,
 
 **In simple terms:** If class B is a subclass of class A, then B should be able to replace A without any issues.
 
-**Problem:** In this case, although it's not explicitly written, the violation will happen when you try to replace this with a different class. For example, if you subclass OnlineStore and change how checkout works but it no longer supports the add_item method in the same way, or doesn't update the inventory correctly, that would violate LSP.
+**❌ Problem:**
 
-Let’s assume you extend the store to support different types of stores (e.g., physical store vs. online store). You need to ensure that subclasses can be used interchangeably without breaking the system.
+**SpotifyMusicPlayer** might behave differently from DefaultMusicPlayer
+If **SpotifyMusicPlayer** requires an API key while DefaultMusicPlayer does not, switching between them could break the app.
+**ReportGenerator** subclasses must return output in a consistent format
+**TextReportGenerator** prints a text report, but JSONReportGenerator prints JSON format differently.
+
+**✅ Solution:**
+Ensure all subclasses honor the contract of the base class.
+
+Do not change method behavior unexpectedly.
 
 ```
-class Store(ABC):
+from abc import ABC, abstractmethod
+from typing import List
+
+# --- SRP Classes (Same) ---
+class User:
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+
+class Song:
+    def __init__(self, title, artist):
+        self.title = title
+        self.artist = artist
+
+class UserManager:
+    def __init__(self):
+        self.users: List[User] = []
+
+    def add_user(self, name, email):
+        self.users.append(User(name, email))
+
+class SongManager:
+    def __init__(self):
+        self.songs: List[Song] = []
+
+    def add_song(self, title, artist):
+        self.songs.append(Song(title, artist))
+
+# --- Applying LSP to Reports ---
+class ReportGenerator(ABC):
     @abstractmethod
-    def checkout(self, payment_method, customer):
+    def generate_report(self, users: List[User], songs: List[Song]) -> str:
+        """All subclasses must return a string report format"""
         pass
 
-class OnlineStore(Store):
-    def checkout(self, payment_method, customer):
-        print(f"Processing online store checkout for {customer}")
+class TextReportGenerator(ReportGenerator):
+    def generate_report(self, users: List[User], songs: List[Song]) -> str:
+        return f"Text Report: {len(users)} users, {len(songs)} songs."
 
-class PhysicalStore(Store):
-    def checkout(self, payment_method, customer):
-        print(f"Processing physical store checkout for {customer}")
+class JSONReportGenerator(ReportGenerator):
+    def generate_report(self, users: List[User], songs: List[Song]) -> str:
+        return f'{{"users": {len(users)}, "songs": {len(songs)}}}'
+
+# --- Applying LSP to Music Players ---
+class MusicPlayer(ABC):
+    @abstractmethod
+    def play_song(self, title: str, songs: List[Song]) -> str:
+        """All subclasses must return a consistent message"""
+        pass
+
+class DefaultMusicPlayer(MusicPlayer):
+    def play_song(self, title: str, songs: List[Song]) -> str:
+        song = next((s for s in songs if s.title == title), None)
+        if song:
+            return f"Playing {song.title} by {song.artist}"
+        return "Song not found"
+
+class SpotifyMusicPlayer(MusicPlayer):
+    def __init__(self, api_key: str):
+        if not api_key:
+            raise ValueError("API key required for Spotify")
+        self.api_key = api_key
+
+    def play_song(self, title: str, songs: List[Song]) -> str:
+        return f"Streaming '{title}' via Spotify API with key {self.api_key}"
+
+# --- Email Service (Same) ---
+class EmailService:
+    def send_email(self, email, message):
+        print(f"Sending email to {email}: {message}")
+
+# --- Usage ---
+user_manager = UserManager()
+song_manager = SongManager()
+
+user_manager.add_user("Alice", "alice@example.com")
+song_manager.add_song("Shape of You", "Ed Sheeran")
+
+# Generating reports
+report_generators: List[ReportGenerator] = [TextReportGenerator(), JSONReportGenerator()]
+for report in report_generators:
+    print(report.generate_report(user_manager.users, song_manager.songs))
+
+# Playing music
+music_players: List[MusicPlayer] = [
+    DefaultMusicPlayer(),
+    SpotifyMusicPlayer(api_key="XYZ123")
+]
+
+for player in music_players:
+    print(player.play_song("Shape of You", song_manager.songs))
+
 ```
+**✅ Improvements:**
+✅ All subclasses of ReportGenerator return a string format (consistent behavior)
+✅ All subclasses of MusicPlayer return a consistent string message
+✅ SpotifyMusicPlayer now enforces an API key at instantiation
 
-Both stores now support checkout, and the system can substitute an OnlineStore with a PhysicalStore without any issues.
 
-**In the real world:**
-
-**Example**: Suppose in a warehouse, you use robots for inventory updates. If one robot is replaced by another, it should work the same way. If the replacement robot can't access the stockroom or update the inventory correctly, it would cause chaos.
+**Real World Example**: Suppose in a warehouse, you use robots for inventory updates. If one robot is replaced by another, it should work the same way. If the replacement robot can't access the stockroom or update the inventory correctly, it would cause chaos.
 
 ## 4) Interface Segregation Principle
 
@@ -326,80 +408,120 @@ Both stores now support checkout, and the system can substitute an OnlineStore w
 **In simple terms:** Don’t make classes implement methods they don’t need.
 
 
-**Problem:** There’s no clear interface segregation here, but when this code expands, adding more and more unrelated features to OnlineStore, the class will start to become overburdened. If you later want to reuse parts of the system (say for payment or notification handling), you'll be forced to deal with unnecessary methods that you don't need.
+**❌ Problem:**
 
-**In the real world:
+The Interface Segregation Principle (ISP) states that a class should not be forced to implement methods it does not use.
 
-Example:** Imagine if a payment terminal in a store is also responsible for turning on the lights or controlling the store's air conditioning. The device would be overloaded with responsibilities it doesn't need.
+Currently, our MusicPlayer abstract class forces all music players to implement the play_song method.
 
-We’ll break down large, unwieldy interfaces into smaller, more specific ones. This way, classes only implement what they actually need.
+**💡 Problem Scenario:**
 
-You can apply the Interface Segregation Principle (ISP) by creating separate authentication mechanisms for different payment methods—one for SMS-based authentication and another for PIN-based authentication. This approach will allow each payment method to use the appropriate authentication class without being burdened by unnecessary methods or logic.
+What if we add a YouTubeMusicPlayer that needs a play_video method instead?
+The MusicPlayer interface forces YouTubeMusicPlayer to implement play_song, even though it is mainly a video player.
 
+**✅ Solution:**
+
+We should split interfaces into smaller, more specific ones.
+
+        AudioPlayer: For playing music
+        VideoPlayer: For playing videos
+        
 ```
 from abc import ABC, abstractmethod
+from typing import List
 
-class AuthenticationInterface(ABC):
+# --- SRP Classes (Same) ---
+class User:
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+
+class Song:
+    def __init__(self, title, artist):
+        self.title = title
+        self.artist = artist
+
+class UserManager:
+    def __init__(self):
+        self.users: List[User] = []
+
+    def add_user(self, name, email):
+        self.users.append(User(name, email))
+
+class SongManager:
+    def __init__(self):
+        self.songs: List[Song] = []
+
+    def add_song(self, title, artist):
+        self.songs.append(Song(title, artist))
+
+# --- Applying ISP to Players ---
+class AudioPlayer(ABC):  # Interface for Audio Players
     @abstractmethod
-    def authenticate(self, customer):
+    def play_audio(self, title: str, songs: List[Song]) -> str:
         pass
 
-class SMSAuth(AuthenticationInterface):
-    def authenticate(self, customer):
-        print(f"Sending SMS to {customer} for authentication.")
-
-class PINAuth(AuthenticationInterface):
-    def authenticate(self, customer):
-        print(f"Requesting PIN from {customer} for UPI authentication.")
-
-
-class PaymentMethod(ABC):
-    def __init__(self, auth_method: AuthenticationInterface):
-        self.auth_method = auth_method
-    
+class VideoPlayer(ABC):  # Interface for Video Players
     @abstractmethod
-    def process_payment(self, customer):
+    def play_video(self, title: str) -> str:
         pass
 
-class CreditCardPayment(PaymentMethod):
-    def process_payment(self, customer):
-        print(f"Processing credit card payment for {customer}")
-        self.auth_method.authenticate(customer)
+class DefaultMusicPlayer(AudioPlayer):
+    def play_audio(self, title: str, songs: List[Song]) -> str:
+        song = next((s for s in songs if s.title == title), None)
+        if song:
+            return f"Playing {song.title} by {song.artist}"
+        return "Song not found"
 
-class DebitCardPayment(PaymentMethod):
-    def process_payment(self, customer):
-        print(f"Processing debit card payment for {customer}")
-        self.auth_method.authenticate(customer)
+class SpotifyMusicPlayer(AudioPlayer):
+    def __init__(self, api_key: str):
+        if not api_key:
+            raise ValueError("API key required for Spotify")
+        self.api_key = api_key
 
-class UPIPayment(PaymentMethod):
-    def process_payment(self, customer):
-        print(f"Processing UPI payment for {customer}")
-        self.auth_method.authenticate(customer)
+    def play_audio(self, title: str, songs: List[Song]) -> str:
+        return f"Streaming '{title}' via Spotify API with key {self.api_key}"
+
+class YouTubeMusicPlayer(AudioPlayer, VideoPlayer):
+    def play_audio(self, title: str, songs: List[Song]) -> str:
+        return f"Playing '{title}' as audio on YouTube"
+
+    def play_video(self, title: str) -> str:
+        return f"Playing '{title}' as video on YouTube"
+
+# --- Email Service (Same) ---
+class EmailService:
+    def send_email(self, email, message):
+        print(f"Sending email to {email}: {message}")
+
+# --- Usage ---
+user_manager = UserManager()
+song_manager = SongManager()
+
+user_manager.add_user("Alice", "alice@example.com")
+song_manager.add_song("Shape of You", "Ed Sheeran")
+
+# Using different players
+audio_players: List[AudioPlayer] = [
+    DefaultMusicPlayer(),
+    SpotifyMusicPlayer(api_key="XYZ123"),
+    YouTubeMusicPlayer()
+]
+
+for player in audio_players:
+    print(player.play_audio("Shape of You", song_manager.songs))
+
+# Using YouTube as a video player
+youtube_player = YouTubeMusicPlayer()
+print(youtube_player.play_video("Shape of You - Music Video"))
 ```
+✅ Improvements:
 
-```
-# Creating instances with specific authentication mechanisms
-credit_payment = CreditCardPayment(SMSAuth())
-debit_payment = DebitCardPayment(SMSAuth())
-upi_payment = UPIPayment(PINAuth())
+✅ Separate interfaces for Audio and Video
+✅ No unnecessary methods forced on classes
+✅ YouTubeMusicPlayer can act as both Audio and Video Player without violating ISP
+✅ Scalability: If we add a NetflixPlayer, it can implement only VideoPlayer without affecting audio players
 
-# Simulating the payment process
-credit_payment.process_payment("customer@example.com")
-debit_payment.process_payment("customer2@example.com")
-upi_payment.process_payment("customer3@example.com")
-```
-
-**OUTPUT**
-```
-Processing credit card payment for customer@example.com
-Sending SMS to customer@example.com for authentication.
-
-Processing debit card payment for customer2@example.com
-Sending SMS to customer2@example.com for authentication.
-
-Processing UPI payment for customer3@example.com
-Requesting PIN from customer3@example.com for UPI authentication.
-```
 
 
 ## 5) Dependancy Inversion Principle
@@ -409,59 +531,165 @@ Definition: High-level modules should not depend on low-level modules. Both shou
 In simple terms: Instead of classes depending directly on concrete implementations, they should rely on interfaces or abstract classes.
 
 
-**Problem:** The checkout method directly depends on low-level details like sending emails or processing payments. There are no abstractions, making the OnlineStore tightly coupled with these implementations. If you want to change the notification method (e.g., to send push notifications), you'll have to modify the class.
+**❌ Problem:**
 
-**In the real world:
+The Dependency Inversion Principle (DIP) states that high-level modules should not depend on low-level modules. Both should depend on abstractions (interfaces).
 
-Example:** In a store, instead of manually sending a message to customers after each purchase, you’d want a system where different communication channels can be easily swapped in and out without changing the whole store’s operation.
+**What’s wrong in our current code?**
+
+**EmailService** is directly instantiated in the application. If we switch to SMS notifications, we need to modify the core logic.
+The ReportGenerator is directly used instead of being injected, making it tightly coupled with specific implementations.
+
+**✅ Solution:**
+Use dependency injection to allow switching implementations easily.
+Create an abstract notification service (Notifier) instead of depending on EmailService.
+Inject dependencies via the constructor.
 
 ```
 from abc import ABC, abstractmethod
+from typing import List
 
-class PaymentProcessor(ABC):
+# --- SRP Classes (Same) ---
+class User:
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+
+class Song:
+    def __init__(self, title, artist):
+        self.title = title
+        self.artist = artist
+
+class UserManager:
+    def __init__(self):
+        self.users: List[User] = []
+
+    def add_user(self, name, email):
+        self.users.append(User(name, email))
+
+class SongManager:
+    def __init__(self):
+        self.songs: List[Song] = []
+
+    def add_song(self, title, artist):
+        self.songs.append(Song(title, artist))
+
+# --- Applying DIP: Abstract Notifier ---
+class Notifier(ABC):
     @abstractmethod
-    def process_payment(self, amount):
+    def send_notification(self, recipient: str, message: str):
         pass
 
+class EmailNotifier(Notifier):
+    def send_notification(self, recipient: str, message: str):
+        print(f"📧 Sending email to {recipient}: {message}")
 
-class CreditCardPayment(PaymentProcessor):
-    def process_payment(self, amount):
-        print(f"Processing credit card payment of {amount}")
+class SMSNotifier(Notifier):
+    def send_notification(self, recipient: str, message: str):
+        print(f"📱 Sending SMS to {recipient}: {message}")
 
-class DebitCardPayment(PaymentProcessor):
-    def process_payment(self, amount):
-        print(f"Processing debit card payment of {amount}")
+# --- Applying DIP: Abstract Report Generator ---
+class ReportGenerator(ABC):
+    @abstractmethod
+    def generate_report(self, users: List[User], songs: List[Song]) -> str:
+        pass
 
-class UPIPayment(PaymentProcessor):
-    def process_payment(self, amount):
-        print(f"Processing UPI payment of {amount}")
+class TextReportGenerator(ReportGenerator):
+    def generate_report(self, users: List[User], songs: List[Song]) -> str:
+        return f"Text Report: {len(users)} users, {len(songs)} songs."
 
+class JSONReportGenerator(ReportGenerator):
+    def generate_report(self, users: List[User], songs: List[Song]) -> str:
+        return f'{{"users": {len(users)}, "songs": {len(songs)}}}'
 
-class OnlineStore:
-    def __init__(self, payment_processor: PaymentProcessor):
-        self.payment_processor = payment_processor
+# --- Report Service with Dependency Injection ---
+class ReportService:
+    def __init__(self, report_generator: ReportGenerator):
+        self.report_generator = report_generator
 
-    def checkout(self, amount):
-        self.payment_processor.process_payment(amount)
+    def generate(self, users: List[User], songs: List[Song]) -> str:
+        return self.report_generator.generate_report(users, songs)
 
+# --- Applying DIP to Players ---
+class AudioPlayer(ABC):
+    @abstractmethod
+    def play_audio(self, title: str, songs: List[Song]) -> str:
+        pass
 
-# Creating instances with different payment methods
-credit_store = OnlineStore(CreditCardPayment())
-debit_store = OnlineStore(DebitCardPayment())
-upi_store = OnlineStore(UPIPayment())
+class VideoPlayer(ABC):
+    @abstractmethod
+    def play_video(self, title: str) -> str:
+        pass
 
-# Process payments
-credit_store.checkout(100)  # Processing credit card payment of 100
-debit_store.checkout(200)   # Processing debit card payment of 200
-upi_store.checkout(300)     # Processing UPI payment of 300
+class DefaultMusicPlayer(AudioPlayer):
+    def play_audio(self, title: str, songs: List[Song]) -> str:
+        song = next((s for s in songs if s.title == title), None)
+        if song:
+            return f"Playing {song.title} by {song.artist}"
+        return "Song not found"
+
+class SpotifyMusicPlayer(AudioPlayer):
+    def __init__(self, api_key: str):
+        if not api_key:
+            raise ValueError("API key required for Spotify")
+        self.api_key = api_key
+
+    def play_audio(self, title: str, songs: List[Song]) -> str:
+        return f"Streaming '{title}' via Spotify API with key {self.api_key}"
+
+class YouTubeMusicPlayer(AudioPlayer, VideoPlayer):
+    def play_audio(self, title: str, songs: List[Song]) -> str:
+        return f"Playing '{title}' as audio on YouTube"
+
+    def play_video(self, title: str) -> str:
+        return f"Playing '{title}' as video on YouTube"
+
+# --- Usage with Dependency Injection ---
+user_manager = UserManager()
+song_manager = SongManager()
+
+user_manager.add_user("Alice", "alice@example.com")
+song_manager.add_song("Shape of You", "Ed Sheeran")
+
+# Injecting Text Report Generator
+report_service = ReportService(TextReportGenerator())
+print(report_service.generate(user_manager.users, song_manager.songs))
+
+# Injecting JSON Report Generator
+json_report_service = ReportService(JSONReportGenerator())
+print(json_report_service.generate(user_manager.users, song_manager.songs))
+
+# Injecting Notification Service
+email_notifier = EmailNotifier()
+sms_notifier = SMSNotifier()
+
+email_notifier.send_notification("alice@example.com", "Welcome to Music App!")
+sms_notifier.send_notification("9876543210", "Your subscription is activated!")
+
+# Using different players
+audio_players: List[AudioPlayer] = [
+    DefaultMusicPlayer(),
+    SpotifyMusicPlayer(api_key="XYZ123"),
+    YouTubeMusicPlayer()
+]
+
+for player in audio_players:
+    print(player.play_audio("Shape of You", song_manager.songs))
+
+# Using YouTube as a video player
+youtube_player = YouTubeMusicPlayer()
+print(youtube_player.play_video("Shape of You - Music Video"))
+
 ```
 
-**OUTPUT**
-```
-Processing credit card payment of 100
-Processing debit card payment of 200
-Processing UPI payment of 300
-```
+
+**✅ Improvements:**
+✅ ReportService now depends on ReportGenerator abstraction → Easier to swap implementations
+✅ Notifier interface allows us to switch from Email to SMS without modifying the code
+✅ Better Testability → We can mock dependencies (MockReportGenerator, MockNotifier)
+✅ More Flexible & Scalable → Future features like PushNotifier or CSVReportGenerator can be added without modifying existing classes
+
+
 **Real World:** 
 Imagine a restaurant:
 
@@ -472,7 +700,49 @@ If the restaurant later adds a new payment method (e.g., digital wallets), the c
 
 This decoupling keeps the process flexible and extendable.
 
-## Conclusion
+
+## 🎯 Summary: Applying SOLID Principles to the Music App
+
+We started with bad code that violated all SOLID principles and gradually improved it step by step. 🚀
+
+Here’s a before vs. after comparison:
+
+**1️⃣ SRP (Single Responsibility Principle)**
+❌ Before: MusicPlayer handled playing songs, managing users, and sending emails.
+✅ After:
+✔ Separated responsibilities into UserManager, SongManager, EmailService, and MusicPlayer.
+✔ Each class now has only one reason to change.
+
+**2️⃣ OCP (Open/Closed Principle)**
+❌ Before: Adding new music players (like Spotify) required modifying MusicPlayer.
+✅ After:
+✔ Introduced AudioPlayer (interface) to allow new players without modifying existing code.
+✔ Now, we can add new players (like Apple Music) by just creating a new class that implements AudioPlayer.
+
+**3️⃣ LSP (Liskov Substitution Principle)**
+❌ Before: SpotifyMusicPlayer threw an error if api_key was missing, breaking substitution.
+✅ After:
+✔ Ensured all subclasses fully support the AudioPlayer interface.
+✔ Now, any AudioPlayer can be used without unexpected failures.
+
+**4️⃣ ISP (Interface Segregation Principle)**
+❌ Before: MusicPlayer forced all music players to implement play_song, even if they played videos.
+✅ After:
+✔ Split into two smaller interfaces: AudioPlayer (for music) and VideoPlayer (for videos).
+✔ Now, YouTubeMusicPlayer implements both instead of being forced into one.
+
+**5️⃣ DIP (Dependency Inversion Principle)**
+❌ Before: EmailService was directly instantiated, making it tightly coupled to MusicPlayer.
+✅ After:
+✔ Created an abstract Notifier class, allowing easy switching between EmailNotifier and SMSNotifier.
+✔ Used Dependency Injection to make ReportService flexible with TextReportGenerator and JSONReportGenerator.
+
+**🔥 Final Benefits of SOLID Applied Code**
+✅ Scalable: We can add new features (new music players, reports, notifications) without modifying existing classes.
+✅ Testable: We can easily mock dependencies (MockNotifier, MockReportGenerator) for unit testing.
+✅ Flexible: We can swap implementations (e.g., change Notifier from Email to SMS) without code changes.
+✅ Future-Proof: The code adapts to future needs without breaking existing functionality.
+
 That's all for S.O.L.I.D Principles, these principles are very essential in order to write clean, comprehensive code and as we keep writing code we don't have to remember these principles rather we can just integrate them on the go.
 
 
