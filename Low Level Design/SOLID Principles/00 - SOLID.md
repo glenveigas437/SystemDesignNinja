@@ -76,65 +76,79 @@ _The class directly depends on implementation details instead of abstracting fun
 
 **In simple terms:** Each class should do one thing and do it well.
 
-**Violation in the above code**:
-- **Problem**: The OnlineStore class is doing too many things:
-  - It handles item management (add_item).
-  - It processes payments in the checkout method.
-  - It sends notifications (decides whether to send an email or SMS).
-  - It updates the inventory.
-  - 
-- **Why it's bad**:
-A class should only have one reason to change. If you want to change the way payments are handled, or how notifications are sent, or how inventory is updated, you'll end up modifying this class, which can introduce bugs in unrelated functionality.
-This makes the class harder to understand and maintain because multiple responsibilities are bundled into one.
+**❌ Problem:**
+        The **MusicApp** class is handling multiple responsibilities:
+        
+        - User Management (add_user)
+        - Song Management (add_song)
+        - Report Generation (generate_report)
+        - Song Playing (play_song)
+        - Email Sending (send_email)
 
-here's how you can fix it
+This violates SRP because a class should have only one reason to change.
 
-We’ll refactor the OnlineStore class so that it only manages the cart and checkout process. We'll delegate payment processing, notification sending, and inventory management to separate classes.
+**✅ Solution:**
+
+We will separate responsibilities into different classes.
 
 ```
-class InventoryManager:
-    def update_inventory(self, items):
-        for item in items:
-            print(f"Updating inventory for {item}")
+class User:
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
 
-class PaymentProcessor:
-    def process_payment(self, payment_method, customer):
-        if payment_method == "credit_card":
-            print(f"Processing credit card payment for {customer}")
-        elif payment_method == "cash":
-            print(f"Processing cash payment for {customer}")
+class Song:
+    def __init__(self, title, artist):
+        self.title = title
+        self.artist = artist
 
-class NotificationService:
-    def send_notification(self, customer, message):
-        if "@" in customer:
-            print(f"Sending email to {customer}: {message}")
-        else:
-            print(f"Sending SMS to {customer}: {message}")
-
-class OnlineStore:
+class UserManager:
     def __init__(self):
-        self.items = []
+        self.users = []
 
-    def add_item(self, item):
-        self.items.append(item)
+    def add_user(self, name, email):
+        user = User(name, email)
+        self.users.append(user)
 
-    def checkout(self, payment_method, customer):
-        payment_processor = PaymentProcessor()
-        payment_processor.process_payment(payment_method, customer)
+class SongManager:
+    def __init__(self):
+        self.songs = []
 
-        inventory_manager = InventoryManager()
-        inventory_manager.update_inventory(self.items)
+    def add_song(self, title, artist):
+        song = Song(title, artist)
+        self.songs.append(song)
 
-        notification_service = NotificationService()
-        notification_service.send_notification(customer, "Thank you for your purchase!")
+class ReportGenerator:
+    def generate_report(self, users, songs):
+        print(f"Generating report for {len(users)} users and {len(songs)} songs...")
+
+class MusicPlayer:
+    def play_song(self, title, songs):
+        song = next((s for s in songs if s.title == title), None)
+        if song:
+            print(f"Now playing {song.title} by {song.artist}")
+        else:
+            print("Song not found")
+
+class EmailService:
+    def send_email(self, email, message):
+        print(f"Sending email to {email}: {message}")
+
+# Usage
+user_manager = UserManager()
+song_manager = SongManager()
+report_generator = ReportGenerator()
+music_player = MusicPlayer()
+email_service = EmailService()
+
+user_manager.add_user("Alice", "alice@example.com")
+song_manager.add_song("Shape of You", "Ed Sheeran")
+
+report_generator.generate_report(user_manager.users, song_manager.songs)
+music_player.play_song("Shape of You", song_manager.songs)
+email_service.send_email("alice@example.com", "Welcome to Music App!")
+
 ```
-
-Output
-```
-Updating inventory for Laptop
-Sending email to customer@example.com: Thank you for your purchase!
-```
-
 Now, each class has a single responsibility.
 
 **Real-World Example:**
