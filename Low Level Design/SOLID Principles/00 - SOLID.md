@@ -1,7 +1,23 @@
 # Getting Started with [S](#1-single-responsibility-principle).[O](#2-open-close-principle).[L](#3-liskov-substitution-principle).[I](#4-interface-segregation-principle).[D](#5-dependancy-inversion-principle) Principles
 
+**What Are SOLID Principles?**
 
-Have a look at this example,
+SOLID is a set of five design principles that help developers write maintainable, scalable, and flexible code.
+
+**S** - Single Responsibility Principle (SRP)
+        _A class should have only one reason to change._
+        
+**O** - Open/Closed Principle (OCP)
+        _A class should be open for extension but closed for modification._
+        
+**L** - Liskov Substitution Principle (LSP)
+        _A subclass should be able to replace its superclass without breaking the code._
+        
+**I** - Interface Segregation Principle (ISP)
+        _A class should not be forced to implement interfaces it doesn’t use._
+        
+**D** - Dependency Inversion Principle (DIP)
+        _High-level modules should not depend on low-level modules. Both should depend on abstractions._
 
 ```
 class OnlineStore:
