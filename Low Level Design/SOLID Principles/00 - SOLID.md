@@ -2,7 +2,7 @@
 
 **What Are SOLID Principles?**
 
-SOLID is a set of five design principles that help developers write maintainable, scalable, and flexible code.
+The SOLID principles are a set of five guidelines to help you design software that is flexible, maintainable, and scalable. Each letter stands for a different principle, and together they help you create clean and robust code.
 
 **S** - Single Responsibility Principle (SRP)<br>
 &nbsp;&nbsp;&nbsp; _A class should have only one reason to change._
@@ -19,45 +19,57 @@ SOLID is a set of five design principles that help developers write maintainable
 **D** - Dependency Inversion Principle (DIP)<br>
 &nbsp;&nbsp;&nbsp; _High-level modules should not depend on low-level modules. Both should depend on abstractions._
 
+
+**Here’s a badly designed piece of code that violates all SOLID principles:**
+
 ```
-class OnlineStore:
+class MusicApp:
     def __init__(self):
-        self.items = []
+        self.users = []
+        self.songs = []
 
-    def add_item(self, item):
-        self.items.append(item)
+    def add_user(self, name, email):
+        self.users.append({"name": name, "email": email})
 
-    def checkout(self, payment_method, customer):
-        # Process payment
-        if payment_method == "credit_card":
-            print(f"Processing credit card payment for {customer}")
-        elif payment_method == "cash":
-            print(f"Processing cash payment for {customer}")
-        
-        # Send notification
-        if "@" in customer:
-            print(f"Sending email notification to {customer}")
+    def add_song(self, title, artist):
+        self.songs.append({"title": title, "artist": artist})
+
+    def generate_report(self):
+        print("Generating report for all users and songs...")
+
+    def play_song(self, title):
+        song = next((s for s in self.songs if s["title"] == title), None)
+        if song:
+            print(f"Now playing {song['title']} by {song['artist']}")
         else:
-            print(f"Sending SMS notification to {customer}")
+            print("Song not found")
 
-        # Update inventory
-        for item in self.items:
-            print(f"Updating inventory for {item}")
+    def send_email(self, email, message):
+        print(f"Sending email to {email}: {message}")
 
-# Usage:
-store = OnlineStore()
-store.add_item("Laptop")
-store.checkout("credit_card", "customer@example.com")
 ```
 
-### Output
-```
-Processing credit card payment for customer@example.com
-Sending email notification to customer@example.com
-Updating inventory for Laptop                               
-```
+❌ Violates SRP (Single Responsibility Principle)
 
-This design violates several key principles that make it hard to maintain, scale, and adapt over time. The SOLID principles are a set of five guidelines to help you design software that is flexible, maintainable, and scalable. Each letter stands for a different principle, and together they help you create clean and robust code. Here’s an easy explanation of each principle and we'll be fixing the code for each violation that occurs.
+The MusicApp class is doing too much (handling users, songs, reports, and emails).
+
+❌ Violates OCP (Open/Closed Principle)
+
+If we need a new type of report or a new way to play songs, we have to modify the class.
+
+❌ Violates LSP (Liskov Substitution Principle)
+
+If we tried to create a PremiumMusicApp subclass with extra features, it would break the existing code.
+
+❌ Violates ISP (Interface Segregation Principle)
+
+The class has methods (send_email, generate_report) that may not be needed by all users of this class.
+
+❌ Violates DIP (Dependency Inversion Principle)
+
+The class directly depends on implementation details instead of abstracting functionalities.
+
+
 
 ## 1) Single Responsibility Principle
 **Definition**: A class should have only one reason to change, meaning it should only have one job or responsibility.
