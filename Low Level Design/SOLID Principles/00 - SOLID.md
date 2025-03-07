@@ -5,7 +5,7 @@
 SOLID is a set of five design principles that help developers write maintainable, scalable, and flexible code.
 
 **S** - Single Responsibility Principle (SRP)<br>
-        _A class should have only one reason to change._
+&nbsp;&nbsp _A class should have only one reason to change._
         
 **O** - Open/Closed Principle (OCP)
         _A class should be open for extension but closed for modification._
