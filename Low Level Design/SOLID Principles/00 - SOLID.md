@@ -160,62 +160,122 @@ Open & Close display polarity in their literal meanings and so is this concept e
 - Open: Open to extention of functionalities
 - Close: Close to modification of existing functions
 
-**Violation in the above code**:
-**Problem**: The checkout method is not open for extension but open for modification. Every time a new payment method or notification type is introduced (e.g., adding PayPal, or sending push notifications), you’ll need to modify the existing method.
+**❌ Problem:**
 
-**Why it's bad:**
+Our **ReportGenerator** and **MusicPlayer** classes are not open for extension.
 
-Every time you change the logic inside checkout, you risk breaking the current functionality. The system should allow new features (like new payment methods) to be added without modifying the existing code.
-This design is rigid and not future-proof.
+Example issue:
 
-We’ll make the system open for extension by abstracting the payment methods into separate classes. This way, we can easily add new payment types without modifying the existing OnlineStore class.
+If we want to generate a different type of report (like JSON instead of text), we need to modify ReportGenerator, violating OCP.
+If we want to support multiple music players (like Spotify or Apple Music), we need to modify MusicPlayer, violating OCP.
 
-This is the interface
+✅ Solution:
+
+We'll use abstraction (inheritance or interfaces) to allow extensions without modifying existing code.
+
 ```
 from abc import ABC, abstractmethod
+from typing import List
 
-class PaymentMethod(ABC):
+# --- SRP Classes ---
+class User:
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+
+class Song:
+    def __init__(self, title, artist):
+        self.title = title
+        self.artist = artist
+
+class UserManager:
+    def __init__(self):
+        self.users: List[User] = []
+
+    def add_user(self, name, email):
+        user = User(name, email)
+        self.users.append(user)
+
+class SongManager:
+    def __init__(self):
+        self.songs: List[Song] = []
+
+    def add_song(self, title, artist):
+        song = Song(title, artist)
+        self.songs.append(song)
+
+# --- Applying OCP for Reports ---
+class ReportGenerator(ABC):  # Abstract class
     @abstractmethod
-    def process(self, customer):
+    def generate_report(self, users: List[User], songs: List[Song]):
         pass
 
-class CreditCardPayment(PaymentMethod):
-    def process(self, customer):
-        print(f"Processing credit card payment for {customer}")
+class TextReportGenerator(ReportGenerator):  # Concrete Implementation
+    def generate_report(self, users: List[User], songs: List[Song]):
+        print(f"Generating TEXT report for {len(users)} users and {len(songs)} songs.")
 
-class CashPayment(PaymentMethod):
-    def process(self, customer):
-        print(f"Processing cash payment for {customer}")
+class JSONReportGenerator(ReportGenerator):  # New Implementation (EXTENDED, not modified)
+    def generate_report(self, users: List[User], songs: List[Song]):
+        print(f"Generating JSON report: {{'users': {len(users)}, 'songs': {len(songs)}}}")
 
-class OnlineStore:
-    def __init__(self):
-        self.items = []
+# --- Applying OCP for Music Players ---
+class MusicPlayer(ABC):  # Abstract class
+    @abstractmethod
+    def play_song(self, title: str, songs: List[Song]):
+        pass
 
-    def add_item(self, item):
-        self.items.append(item)
+class DefaultMusicPlayer(MusicPlayer):
+    def play_song(self, title: str, songs: List[Song]):
+        song = next((s for s in songs if s.title == title), None)
+        if song:
+            print(f"Now playing {song.title} by {song.artist}")
+        else:
+            print("Song not found")
 
-    def checkout(self, payment_method: PaymentMethod, customer):
-        payment_method.process(customer)
+class SpotifyMusicPlayer(MusicPlayer):  # New Implementation (EXTENDED, not modified)
+    def play_song(self, title: str, songs: List[Song]):
+        print(f"Streaming '{title}' via Spotify API...")
 
-        inventory_manager = InventoryManager()
-        inventory_manager.update_inventory(self.items)
+# --- Email Service Remains Same ---
+class EmailService:
+    def send_email(self, email, message):
+        print(f"Sending email to {email}: {message}")
 
-        notification_service = NotificationService()
-        notification_service.send_notification(customer, "Thank you for your purchase!")
+# --- Usage ---
+user_manager = UserManager()
+song_manager = SongManager()
+
+user_manager.add_user("Alice", "alice@example.com")
+song_manager.add_song("Shape of You", "Ed Sheeran")
+
+# Using Text Report Generator
+text_report = TextReportGenerator()
+text_report.generate_report(user_manager.users, song_manager.songs)
+
+# Using JSON Report Generator (EXTENDED, not modified)
+json_report = JSONReportGenerator()
+json_report.generate_report(user_manager.users, song_manager.songs)
+
+# Using Default Music Player
+default_player = DefaultMusicPlayer()
+default_player.play_song("Shape of You", song_manager.songs)
+
+# Using Spotify Player (EXTENDED, not modified)
+spotify_player = SpotifyMusicPlayer()
+spotify_player.play_song("Shape of You", song_manager.songs)
+
+email_service = EmailService()
+email_service.send_email("alice@example.com", "Welcome to Music App!")
+
 ```
 
-```
-online_store = OnlineStore()
-online_store.add_item('Laptop')
-online_store.checkout(CreditCardPayment(), 'customer@example.com')
-```
+✅ **Improvements:**
 
-**OUTPUT**
-```
-Processing credit card payment for customer@example.com
-Updating inventory for Laptop
-Sending email to customer@example.com: Thank you for your purchase!
-```
+        ✅ Report Generation & Music Player are now open for extension
+        
+        ✅ No need to modify existing code when adding new types of reports or music players
+        
+        ✅ Scalability improved – we can now easily add a CSVReportGenerator or AppleMusicPlayer without modifying existing classes
 
 In this manner we are open to adding new payment methods like Cash On Delivery, PayPal or Apple Pay, etc. but in the same manner we are not editing any of the pre-existing code.
 
