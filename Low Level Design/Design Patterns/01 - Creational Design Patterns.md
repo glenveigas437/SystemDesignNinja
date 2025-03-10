@@ -75,7 +75,7 @@ print(player2.play_song("Blinding Lights"))  # ✅ "Playing 'Blinding Lights' on
 ✔ **Payment Gateway Factory** – Returns Stripe, PayPal, or Razorpay integration.
 
 
-## 2 - Abstract Factory Pattern
+## 🚀 Abstract Factory Pattern
 
 **Definition**
 The Abstract Factory Pattern is a creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. It allows clients to create multiple objects that belong to a specific "family" of objects and ensures that only compatible products are created together.
@@ -93,94 +93,96 @@ The Abstract Factory Pattern is useful for creating families of related objects,
 **Real World Analogy**
 Imagine a restaurant that serves different cuisines, like Italian and Mexican. Each cuisine has a specific set of dishes—an Italian set with pizza and pasta, and a Mexican set with tacos and burritos. The restaurant manager (Abstract Factory) can request either the Italian or Mexican kitchen (Concrete Factories) to prepare an entire set of dishes. Each kitchen (Concrete Factory) knows how to create its own related dishes (Concrete Products) that fit well together.
 
-**Example** 
-In a food delivery app, the Abstract Factory Pattern could be used to manage different types of meal categories. For example, you might have VeganMealFactory and NonVeganMealFactory for different dietary preferences. Each factory would produce products like MainCourse, SideDish, and Dessert specific to the dietary preference.
+**🚀 Example: Music & Podcast Players**
+🎵 We have Spotify & Apple Music, each supporting Music & Podcasts.
+🎧 The Abstract Factory lets us create related objects without modifying existing code.
 
 Here's how this would look in code:
 
 ```
 from abc import ABC, abstractmethod
 
-# Abstract Products
-class MainCourse(ABC):
+# 1️⃣ Abstract Products (Interfaces)
+class MusicPlayer(ABC):
     @abstractmethod
-    def prepare(self):
+    def play_song(self, song):
         pass
 
-class SideDish(ABC):
+class PodcastPlayer(ABC):
     @abstractmethod
-    def prepare(self):
+    def play_podcast(self, episode):
         pass
 
-# Concrete Products for Vegan
-class VeganMainCourse(MainCourse):
-    def prepare(self):
-        return "Preparing vegan tofu stir-fry."
+# 2️⃣ Concrete Products
+class SpotifyMusicPlayer(MusicPlayer):
+    def play_song(self, song):
+        return f"Playing '{song}' on Spotify 🎵"
 
-class VeganSideDish(SideDish):
-    def prepare(self):
-        return "Preparing vegan salad."
+class AppleMusicPlayer(MusicPlayer):
+    def play_song(self, song):
+        return f"Playing '{song}' on Apple Music 🍏"
 
-# Concrete Products for Non-Vegan
-class NonVeganMainCourse(MainCourse):
-    def prepare(self):
-        return "Preparing grilled chicken."
+class SpotifyPodcastPlayer(PodcastPlayer):
+    def play_podcast(self, episode):
+        return f"Playing podcast '{episode}' on Spotify 🎙️"
 
-class NonVeganSideDish(SideDish):
-    def prepare(self):
-        return "Preparing fries."
+class ApplePodcastPlayer(PodcastPlayer):
+    def play_podcast(self, episode):
+        return f"Playing podcast '{episode}' on Apple Podcasts 🎤"
 
-# Abstract Factory
-class MealFactory(ABC):
+# 3️⃣ Abstract Factory (Interface)
+class MediaFactory(ABC):
     @abstractmethod
-    def create_main_course(self):
+    def create_music_player(self):
         pass
 
     @abstractmethod
-    def create_side_dish(self):
+    def create_podcast_player(self):
         pass
 
-# Concrete Factories
-class VeganMealFactory(MealFactory):
-    def create_main_course(self):
-        return VeganMainCourse()
+# 4️⃣ Concrete Factories
+class SpotifyFactory(MediaFactory):
+    def create_music_player(self):
+        return SpotifyMusicPlayer()
 
-    def create_side_dish(self):
-        return VeganSideDish()
+    def create_podcast_player(self):
+        return SpotifyPodcastPlayer()
 
-class NonVeganMealFactory(MealFactory):
-    def create_main_course(self):
-        return NonVeganMainCourse()
+class AppleFactory(MediaFactory):
+    def create_music_player(self):
+        return AppleMusicPlayer()
 
-    def create_side_dish(self):
-        return NonVeganSideDish()
+    def create_podcast_player(self):
+        return ApplePodcastPlayer()
 
-# Client Code
-def order_meal(factory: MealFactory):
-    main_course = factory.create_main_course()
-    side_dish = factory.create_side_dish()
-    print(main_course.prepare())
-    print(side_dish.prepare())
+# --- Usage ---
+def play_media(factory: MediaFactory):
+    music_player = factory.create_music_player()
+    podcast_player = factory.create_podcast_player()
 
-# Ordering different types of meals
-print("Vegan Meal:")
-order_meal(VeganMealFactory())
+    print(music_player.play_song("Shape of You"))
+    print(podcast_player.play_podcast("Tech Talks #10"))
 
-print("\nNon-Vegan Meal:")
-order_meal(NonVeganMealFactory())
+# Create Spotify & Apple factories
+spotify_factory = SpotifyFactory()
+apple_factory = AppleFactory()
+
+# Play media using factories
+print("🎵 Spotify Players:")
+play_media(spotify_factory)
+
+print("\n🍏 Apple Players:")
+play_media(apple_factory)
+
 ```
 
-#### OUTPUT
+**🔥 Benefits of Abstract Factory**
 
-```
-Vegan Meal:
-Preparing vegan tofu stir-fry.
-Preparing vegan salad.
+✅ **Encapsulation** → Factory hides complex object creation.
 
-Non-Vegan Meal:
-Preparing grilled chicken.
-Preparing fries.
-```
+✅ **Scalability** → Easily add new players (YouTube Music, Amazon Music).
+
+✅ **Flexibility** → Client code doesn’t depend on specific product classes.
 
 
 ## 3 - Singleton Pattern
