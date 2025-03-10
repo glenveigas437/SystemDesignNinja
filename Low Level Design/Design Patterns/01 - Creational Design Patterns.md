@@ -70,8 +70,11 @@ print(player2.play_song("Blinding Lights"))  # ✅ "Playing 'Blinding Lights' on
 ✅ **Flexibility** → Client code doesn’t depend on specific implementations.
 
 🧐 **Real-World Usage of Factory**
+
 ✔ **Database Connection Factory** – Returns MySQL, PostgreSQL, or SQLite connection.
+
 ✔ **Notification Factory** – Returns Email, SMS, or Push Notification sender.
+
 ✔ **Payment Gateway Factory** – Returns Stripe, PayPal, or Razorpay integration.
 
 
