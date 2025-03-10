@@ -188,8 +188,11 @@ play_media(apple_factory)
 ✅ **Flexibility** → Client code doesn’t depend on specific product classes.
 
 **🧐 Real-World Usage of Abstract Factory**
+
 **✔ Cross-Platform UI Components** – Return MacOS UI vs. Windows UI elements.
+
 **✔ Database Drivers** – Return MySQL, PostgreSQL, or MongoDB clients.
+
 **✔ Payment Gateways** – Return Stripe, PayPal, or Razorpay integrations.
 
 
