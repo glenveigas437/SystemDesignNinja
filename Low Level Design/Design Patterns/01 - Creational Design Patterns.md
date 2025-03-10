@@ -14,9 +14,13 @@ This pattern supports loose coupling by allowing code to depend on an interface 
 Think of ordering a coffee at a café. You don’t specify if a barista or a machine should make it—you just ask for the coffee. The café (acting as the factory) determines the best way to fulfill your request based on current conditions, like staff availability.
 
 **🛠️ Components of Factory Method Pattern**
+
 **1️⃣ Product (Interface/Abstract Class)** → Defines the object structure.
+
 **2️⃣ Concrete Products (Subclasses)** → Implements different versions of the product.
+
 **3️⃣ Creator (Factory Class)** → Declares the create_product() method.
+
 **4️⃣ Concrete Creator (Subclasses of Factory)** → Implements create_product() to return specific objects.
 
 **🚀 Example: Music Player Factory**
