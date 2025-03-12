@@ -196,7 +196,7 @@ play_media(apple_factory)
 **✔ Payment Gateways** – Return Stripe, PayPal, or Razorpay integrations.
 
 
-## 3 - Singleton Pattern
+## 🚀 Singleton Pattern
 
 **Definition**
 The Singleton Pattern is a creational design pattern that ensures a class has only one instance, while providing a global point of access to that instance. This pattern restricts the instantiation of a class to a single object, making it ideal for resources that should be shared throughout an application.
@@ -240,23 +240,13 @@ logger2.log("User played a song")
 print(logger1 is logger2)  # ✅ True (Singleton Works)
 ```
 
-**🔥 Benefits of Factory Method**
+**🧐 Real-World Usage of Singleton**
 
-**✅ Encapsulation** → Hides object creation logic.
+**✔ Database Connection** – Ensuring only one DB connection exists.
 
-**✅ Scalability** → Easily add new players (YouTube Music, SoundCloud) without modifying factory code.
+**✔ Caching Systems** – Keeping a single cache instance.
 
-**✅ Flexibility** → Client code doesn’t depend on specific implementations.
-
-**🧐 Real-World Usage of Factory**
-
-**✔ Database Connection Factory** – Returns MySQL, PostgreSQL, or SQLite connection.
-
-**✔ Notification Factory** – Returns Email, SMS, or Push Notification sender.
-
-**✔ Payment Gateway Factory** – Returns Stripe, PayPal, or Razorpay integration.
-
-
+**✔ Configuration Managers** – Loading config settings once.
 
 ## 🚀 Prototype Pattern
 
@@ -314,7 +304,7 @@ cloned_playlist.show_playlist()  # ✅ Clone has new modifications
 
 ```
 
-## 5 - Builder Pattern
+## 🚀 Builder Pattern
 
 **Definition**
 The Builder Pattern is a creational design pattern that allows the construction of complex objects step by step. This pattern separates the construction of an object from its representation, enabling the same construction process to create different representations or configurations of the object.
