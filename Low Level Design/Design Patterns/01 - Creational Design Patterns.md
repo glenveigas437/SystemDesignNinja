@@ -213,54 +213,52 @@ The purpose of the Singleton Pattern is to control access to a resource that sho
 **Real World Analogy**
 Consider a food delivery app where all orders go through a single OrderManager service that coordinates the assignment of orders to delivery personnel. Regardless of how many users are using the app, there is only one OrderManager to ensure that orders are processed and assigned in a consistent, centralized way.
 
-**Example**
-In a food delivery app, a DatabaseConnection could be implemented as a Singleton to ensure that all parts of the app use the same database connection instance, preventing issues with multiple connections and improving resource management.
+**🚀 Singleton Example: Logger in a Music App**
 
-Here’s how it could look in code:
 ```
-class DatabaseConnection:
-    _instance = None  # Static instance variable
+class Logger:
+    _instance = None  # Static variable to hold the single instance
 
     def __new__(cls):
         if cls._instance is None:
-            cls._instance = super(DatabaseConnection, cls).__new__(cls)
-            cls._instance.connection = cls._create_connection()
+            cls._instance = super(Logger, cls).__new__(cls)
+            cls._instance.logs = []  # Initialize logs
         return cls._instance
 
-    @staticmethod
-    def _create_connection():
-        # Simulate creating a database connection
-        return "Database connection established"
+    def log(self, message):
+        self.logs.append(message)
+        print(f"[LOG] {message}")
 
-    def query(self, sql):
-        return f"Executing '{sql}' on the single database instance."
+# --- Usage ---
+logger1 = Logger()
+logger1.log("User logged in")
 
-# Client Code
-def main():
-    # Getting the single instance
-    db1 = DatabaseConnection()
-    print(db1.query("SELECT * FROM Orders"))
+logger2 = Logger()
+logger2.log("User played a song")
 
-    # Trying to get another instance
-    db2 = DatabaseConnection()
-    print(db2.query("SELECT * FROM Customers"))
-
-    # Verifying that db1 and db2 are the same instance
-    print("Same instance:", db1 is db2)
-
-main()
+# Both loggers point to the same instance
+print(logger1 is logger2)  # ✅ True (Singleton Works)
 ```
 
-### OUTPUT
+**🔥 Benefits of Factory Method**
 
-```
-Executing 'SELECT * FROM Orders' on the single database instance.
-Executing 'SELECT * FROM Customers' on the single database instance.
-Same instance: True
+**✅ Encapsulation** → Hides object creation logic.
 
-```
+**✅ Scalability** → Easily add new players (YouTube Music, SoundCloud) without modifying factory code.
 
-## 4 - Prototype Pattern
+**✅ Flexibility** → Client code doesn’t depend on specific implementations.
+
+**🧐 Real-World Usage of Factory**
+
+**✔ Database Connection Factory** – Returns MySQL, PostgreSQL, or SQLite connection.
+
+**✔ Notification Factory** – Returns Email, SMS, or Push Notification sender.
+
+**✔ Payment Gateway Factory** – Returns Stripe, PayPal, or Razorpay integration.
+
+
+
+## 🚀 Prototype Pattern
 
 **Definition**
 The Prototype Pattern is a creational design pattern that enables the creation of new objects by copying or cloning an existing object, called the prototype. This approach allows for efficient creation of objects when direct instantiation is costly or complicated.
@@ -276,65 +274,44 @@ The Prototype Pattern is particularly useful when creating an object is resource
 **Real World Analogy**
 Consider a food delivery app that allows users to save custom orders as "templates." When a user wants to reorder, they can simply clone their saved template, customize it (e.g., add extra toppings), and place the order. The saved template acts as a prototype for the new customized order.
 
-**Example**
-In a food delivery app, suppose we have a class representing a FoodOrder that has details about the items in an order, customer preferences, and delivery instructions. Using the Prototype Pattern, the app can create new orders by cloning an existing FoodOrder object, which can then be modified before submission.
+**🚀 Purpose**:
+1️⃣ Avoids costly object creation by copying an existing object.
+2️⃣ Supports deep cloning (full copy) or shallow cloning (reference copy).
+3️⃣ Useful when creating an object is expensive (e.g., fetching data from a database).
 
-Here's a code example:
-
+**🛠 Example: Music Playlist Cloning 🎵**
 ```
 import copy
 
-# Prototype Interface
-class FoodOrderPrototype:
+# 🔹 Prototype Interface
+class Prototype:
     def clone(self):
-        return copy.deepcopy(self)
+        pass
 
-# Concrete Prototype
-class FoodOrder(FoodOrderPrototype):
-    def __init__(self, items, customer_notes, delivery_address):
-        self.items = items  # List of items in the order
-        self.customer_notes = customer_notes
-        self.delivery_address = delivery_address
+# 🔹 Concrete Prototype: Playlist
+class Playlist(Prototype):
+    def __init__(self, name, songs):
+        self.name = name
+        self.songs = songs  # List of songs (mutable object)
 
-    def __str__(self):
-        return (f"Items: {self.items}\n"
-                f"Notes: {self.customer_notes}\n"
-                f"Delivery Address: {self.delivery_address}\n")
+    def clone(self):
+        return copy.deepcopy(self)  # Deep Copy to ensure independent objects
 
-# Client Code
-def main():
-    # Original order template
-    original_order = FoodOrder(
-        items=["Pizza", "Salad"],
-        customer_notes="Extra cheese on pizza",
-        delivery_address="123 Food Street"
-    )
-    print("Original Order:")
-    print(original_order)
+    def show_playlist(self):
+        print(f"🎵 Playlist: {self.name}")
+        print(f"📀 Songs: {', '.join(self.songs)}\n")
 
-    # Cloning the order for a new customer with slight changes
-    cloned_order = original_order.clone()
-    cloned_order.customer_notes = "No cheese on pizza"
-    cloned_order.delivery_address = "456 Main Avenue"
+# --- 🚀 Usage ---
+original_playlist = Playlist("Workout Mix", ["Song A", "Song B", "Song C"])
+cloned_playlist = original_playlist.clone()  # Cloning the playlist
 
-    print("Cloned Order with Modifications:")
-    print(cloned_order)
+# Modifying the clone should not affect the original
+cloned_playlist.name = "Chill Vibes"
+cloned_playlist.songs.append("Song D")
 
-main()
-```
+original_playlist.show_playlist()  # ✅ Original remains unchanged
+cloned_playlist.show_playlist()  # ✅ Clone has new modifications
 
-### OUTPUT
-
-```
-Original Order:
-Items: ['Pizza', 'Salad']
-Notes: Extra cheese on pizza
-Delivery Address: 123 Food Street
-
-Cloned Order with Modifications:
-Items: ['Pizza', 'Salad']
-Notes: No cheese on pizza
-Delivery Address: 456 Main Avenue
 ```
 
 ## 5 - Builder Pattern
@@ -355,123 +332,103 @@ The Builder Pattern is useful for constructing complex objects that require mult
 **Real World Analogy**
 In a food delivery app, think of building a customized meal. A MealBuilder allows users to choose different components, such as a main dish, side, and drink, to create a meal that suits their preferences. This pattern lets the app construct different types of meals (e.g., vegan, non-vegan) using the same interface and structure.
 
-**Example**
-In a food delivery app, a user might want to customize a meal by selecting specific items, sides, and drinks. The Builder Pattern could help structure this process, allowing the creation of various meal configurations.
-
-Here’s how it could look in code:
+**🚀 Example: Music Playlist Builder**
 ```
 # Product
-class Meal:
+from abc import ABC, abstractmethod
+
+# 1️⃣ Product (Complex Object)
+class Playlist:
     def __init__(self):
-        self.main_course = None
-        self.side = None
-        self.drink = None
+        self.songs = []
+        self.platform = None
 
     def __str__(self):
-        return (f"Main Course: {self.main_course}\n"
-                f"Side: {self.side}\n"
-                f"Drink: {self.drink}\n")
+        return f"🎵 Playlist on {self.platform}: {', '.join(self.songs)}"
 
+# 2️⃣ Builder Interface
+class PlaylistBuilder(ABC):
+    @abstractmethod
+    def set_platform(self):
+        pass
 
-# Builder Interface
-class MealBuilder:
-    def add_main_course(self, main_course):
-        raise NotImplementedError
+    @abstractmethod
+    def add_song(self, song):
+        pass
 
-    def add_side(self, side):
-        raise NotImplementedError
+    @abstractmethod
+    def get_playlist(self):
+        pass
 
-    def add_drink(self, drink):
-        raise NotImplementedError
-
-    def get_meal(self):
-        raise NotImplementedError
-
-
-# Concrete Builder
-class VeganMealBuilder(MealBuilder):
+# 3️⃣ Concrete Builders
+class SpotifyPlaylistBuilder(PlaylistBuilder):
     def __init__(self):
-        self.meal = Meal()
+        self.playlist = Playlist()
 
-    def add_main_course(self, main_course="Vegan Burger"):
-        self.meal.main_course = main_course
-        return self
+    def set_platform(self):
+        self.playlist.platform = "Spotify"
 
-    def add_side(self, side="Salad"):
-        self.meal.side = side
-        return self
+    def add_song(self, song):
+        self.playlist.songs.append(song)
 
-    def add_drink(self, drink="Smoothie"):
-        self.meal.drink = drink
-        return self
+    def get_playlist(self):
+        return self.playlist
 
-    def get_meal(self):
-        return self.meal
-
-
-class NonVeganMealBuilder(MealBuilder):
+class AppleMusicPlaylistBuilder(PlaylistBuilder):
     def __init__(self):
-        self.meal = Meal()
+        self.playlist = Playlist()
 
-    def add_main_course(self, main_course="Chicken Burger"):
-        self.meal.main_course = main_course
-        return self
+    def set_platform(self):
+        self.playlist.platform = "Apple Music"
 
-    def add_side(self, side="Fries"):
-        self.meal.side = side
-        return self
+    def add_song(self, song):
+        self.playlist.songs.append(song)
 
-    def add_drink(self, drink="Soda"):
-        self.meal.drink = drink
-        return self
+    def get_playlist(self):
+        return self.playlist
 
-    def get_meal(self):
-        return self.meal
-
-
-# Director (Optional)
-class MealDirector:
-    def __init__(self, builder):
+# 4️⃣ Director (Controls the Building Process)
+class PlaylistDirector:
+    def __init__(self, builder: PlaylistBuilder):
         self.builder = builder
 
-    def create_meal(self):
-        return (self.builder
-                .add_main_course()
-                .add_side()
-                .add_drink()
-                .get_meal())
+    def construct_playlist(self, songs):
+        self.builder.set_platform()
+        for song in songs:
+            self.builder.add_song(song)
+        return self.builder.get_playlist()
 
+# --- 🚀 Usage ---
+if __name__ == '__main__':
+    print("🔥 Creating Playlists:")
 
-# Client Code
-def main():
-    # Vegan meal
-    vegan_builder = VeganMealBuilder()
-    director = MealDirector(vegan_builder)
-    vegan_meal = director.create_meal()
-    print("Vegan Meal:")
-    print(vegan_meal)
+    # Create a Spotify Playlist
+    spotify_builder = SpotifyPlaylistBuilder()
+    director = PlaylistDirector(spotify_builder)
+    spotify_playlist = director.construct_playlist(["Shape of You", "Blinding Lights"])
+    print(spotify_playlist)
 
-    # Non-Vegan meal
-    non_vegan_builder = NonVeganMealBuilder()
-    director = MealDirector(non_vegan_builder)
-    non_vegan_meal = director.create_meal()
-    print("\nNon-Vegan Meal:")
-    print(non_vegan_meal)
-
-
-main()
-```
-
-### OUTPUT
+    # Create an Apple Music Playlist
+    apple_builder = AppleMusicPlaylistBuilder()
+    director = PlaylistDirector(apple_builder)
+    apple_playlist = director.construct_playlist(["Starboy", "Levitating"])
+    print(apple_playlist)
 
 ```
-Vegan Meal:
-Main Course: Vegan Burger
-Side: Salad
-Drink: Smoothie
 
-Non-Vegan Meal:
-Main Course: Chicken Burger
-Side: Fries
-Drink: Soda
-```
+**🔥 Benefits of Builder Pattern**
+
+**✅ Step-by-step object creation** → Useful for complex objects.
+
+**✅ Encapsulation** → The client doesn’t need to know how objects are built.
+
+**✅ Flexibility** → We can easily create new playlist types (e.g., YouTube Music).
+
+
+**🧐 Real-World Usage of Builder Pattern**
+
+**✔ SQL Query Builder** – Builds complex SQL queries step by step.
+
+**✔ HTML Page Builder** – Constructs pages with multiple elements.
+
+**✔ Car Configurator** – Builds a car with different options (engine, color, wheels).
